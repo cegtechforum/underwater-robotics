@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Team {
+  id          String       @id @default(cuid())
+  teamName    String
+  collegeName String
+  district    String
+  email       String       @unique
+  password    String
+  mentorName  String?
+  mentorEmail String?
+  mentorPhone String?
+  projectType ProjectType
+  teamMembers TeamMember[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  submission submission?
+}
+
+model TeamMember {
+  id        String   @id @default(cuid())
+  name      String
+  rollNo    String
+  phone     String
+  email     String   @unique
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId    String
+  createdAt DateTime @default(now())
+}
+
+enum ProjectType {
+  PROJECT_PROPOSAL
+  SIMULATION
+  HARDWARE_DEMO
+}
+
+enum statusType {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model OTP {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  otp       String
+  expiresAt DateTime
+}
+
+model submission {
+  id         String     @id @default(cuid())
+  round1_pdf Bytes      @db.ByteA
+  round2_pdf Bytes?     @db.ByteA
+  status     statusType @default(PENDING)
+  createdAt  DateTime   @default(now())
+
+  // Relationship
+  team   Team   @relation(fields: [teamId], references: [id])
+  teamId String @unique
+}
+
+model Admin {
+  id       String @id @default(cuid())
+  email    String @unique
+  password String
+}
