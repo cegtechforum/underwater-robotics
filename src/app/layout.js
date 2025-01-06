@@ -34,6 +34,17 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${orbitron.variable} ${poppins.variable} ${raleway.variable}`}
     >
+       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {/* Open Graph tags */}
+        <meta property="og:title" content="Underwater Robotics 2025" />
+        <meta property="og:description" content={metadata.description} />
+        {/* <meta property="og:image" content="https://hackz.cseaceg.org.in/hackz-logo.jpg" /> */}
+        <meta property="og:url" content="https://underwaterrobotics.kurukshetraceg.org.in/" />
+        {/* Additional Meta Tags */}
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://underwaterrobotics.kurukshetraceg.org.in/" />
+      </head>
       <body>
         {children}
         <Analytics />
