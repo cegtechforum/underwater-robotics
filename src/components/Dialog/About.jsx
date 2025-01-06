@@ -126,7 +126,7 @@ const AboutDialog = ({ Trigger, open, onOpenChange }) => {
               Need assistance?
             </span>
             <div className="flex items-center gap-4">
-              {[{ email: "underwaterrobotics@cegtechforum.in", label: "Events" }].map(
+              {[{ email: "events@cegtechforum.in", label: "Events" }].map(
                 (contact, index) => (
                   <a
                     key={index}

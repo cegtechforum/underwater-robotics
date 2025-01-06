@@ -63,11 +63,19 @@ const ContactDialog = ({ Trigger, open, onOpenChange }) => {
               </div>
               <div className="space-y-3 sm:space-y-4">
                 <a
-                  href="mailto:underwaterrobotics@cegtechforum.in"
-                  className="flex items-center gap-2 text-teal-400/80 hover:text-teal-300 transition-colors group/link text-sm sm:text-base"
+                  href="mailto:events@cegtechforum.in"
+                  className="flex items-center gap-1 text-teal-400/80 hover:text-teal-300 transition-colors group/link text-sm sm:text-base"
                 >
                   <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
-                  <span>underwaterrobotics@cegtechforum.in</span>
+                  <span>events@cegtechforum.in</span>
+                  <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 opacity-0 group-hover/link:opacity-100 transition-opacity" />
+                </a>
+                <a
+                  href="mailto:underwaterrobotics@cegtechforum.in"
+                  className="flex items-center text-teal-400/80 hover:text-teal-300 transition-colors group/link text-sm sm:text-base"
+                >
+                  <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span>&nbsp;underwaterrobotics@cegtechforum.in</span>
                   <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 opacity-0 group-hover/link:opacity-100 transition-opacity" />
                 </a>
 
