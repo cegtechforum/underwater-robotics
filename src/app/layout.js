@@ -1,5 +1,6 @@
 import { Orbitron, Poppins, Raleway } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 
 const orbitron = Orbitron({
   subsets: ["latin"],
@@ -22,14 +23,20 @@ const raleway = Raleway({
 
 export const metadata = {
   title: "Underwater Robotics",
-  description: "Explore the future of underwater exploration and technology through the Underwater Robotics Challenge, a hallmark event of Kurukshetra 2025. This event brings together visionary minds to design, innovate, and engineer groundbreaking solutions for aquatic robotics. Join us to experience the perfect blend of technical brilliance, creativity, and futuristic thinking aimed at advancing marine technology and fostering innovation. Bought to you by CEG Tech Forum.",
+  description:
+    "Explore the future of underwater exploration and technology through the Underwater Robotics Challenge, a hallmark event of Kurukshetra 2025. This event brings together visionary minds to design, innovate, and engineer groundbreaking solutions for aquatic robotics. Join us to experience the perfect blend of technical brilliance, creativity, and futuristic thinking aimed at advancing marine technology and fostering innovation. Bought to you by CEG Tech Forum.",
 };
-
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${orbitron.variable} ${poppins.variable} ${raleway.variable}`}>
-      <body>{children}</body>
+    <html
+      lang="en"
+      className={`${orbitron.variable} ${poppins.variable} ${raleway.variable}`}
+    >
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
