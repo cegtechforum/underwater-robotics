@@ -142,7 +142,7 @@ const Hero = () => {
           fontSize: 18,
         }}
       >
-        A National-Level Flagship Event Driving Innovation in Underwater Technology
+        A National-Level Flagship Event in Underwater Technology
       </p>
 
       {/* Location Button */}
