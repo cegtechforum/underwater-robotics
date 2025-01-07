@@ -1,0 +1,7 @@
+# Allow all crawlers to index the site
+User-agent: *
+Disallow: /api/
+Allow: /
+
+# Specify the location of the sitemap
+Sitemap: https://underwaterrobotics.kurukshetraceg.org.in/sitemap.xml
