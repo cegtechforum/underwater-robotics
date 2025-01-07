@@ -114,7 +114,7 @@ const Hero = () => {
           duration: 1.5,
         }}
       >
-        Underwater <span className="text-orange-600 uppercase">ROBOTICS</span>
+        Underwater <span className="text-orange-600">Robotics</span>
       </motion.h1>
 
       <motion.p
@@ -142,7 +142,7 @@ const Hero = () => {
           fontSize: 18,
         }}
       >
-        PIONEERING THE FUTURE OF UNDERWATER TECHNOLOGY
+        A National-Level Flagship Event Driving Innovation in Underwater Technology
       </p>
 
       {/* Location Button */}
