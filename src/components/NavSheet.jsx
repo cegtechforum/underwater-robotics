@@ -147,7 +147,7 @@ const NavSheet = () => {
                     </div>
                   ) : (
                     <div className="flex items-center justify-center text-white">
-                      <p className="text-lg">Welcome, {session.user?.name}!</p>
+                      <p className="text-lg">Hola, {session.user?.name}!</p>
                     </div>
                   )}
                 </div>
