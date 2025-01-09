@@ -12,6 +12,7 @@ const NavButtons = () => {
     const fetchSession = async () => {
       const sessionData = await getSession();
       setSession(sessionData);
+      // console.log(sessionData);
     };
 
     fetchSession();
@@ -49,7 +50,7 @@ const NavButtons = () => {
               </Link>
             </div>
           ) : (
-            <p className="text-white">Welcome, {session.user?.email}!</p>
+            <p className="text-white">Hola, {session.user?.name}!</p>
           )}
         </div>
       </div>

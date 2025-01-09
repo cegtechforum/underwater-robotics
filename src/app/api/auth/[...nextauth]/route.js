@@ -61,7 +61,8 @@ const handler = NextAuth({
               user.password
             );
             if (passwordCorrect) {
-              return { id: user.id, email: user.email, role: "user" };
+              // console.log("User found:", user.teamName);
+              return { id: user.id, email: user.email, role: "user", teamName: user.teamName };
             } else {
               throw new Error("Incorrect credentials!");
             }
@@ -80,6 +81,7 @@ const handler = NextAuth({
         token.id = user.id;
         token.email = user.email;
         token.role = user.role;
+        token.name = user.teamName;
       }
       return token;
     },
@@ -89,6 +91,7 @@ const handler = NextAuth({
           id: token.id,
           email: token.email,
           role: token.role,
+          name: token.name,
         };
       }
       return session;
