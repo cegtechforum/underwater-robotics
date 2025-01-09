@@ -118,13 +118,13 @@ const Hero = () => {
       </motion.h1>
 
       <motion.p
-        className="mt-4 text-cyan-300 text-xl italic font-bold"
+        className="mt-4 text-xl italic font-bold"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 1 }}
         style={{
           background:
-            "linear-gradient(45deg, #ff6f61, #f0b0c7, #6a82fb, #fc5c7d)",
+            "linear-gradient(45deg, #22D3EE, #67E8F9, #A5F3FC, #38BDF8)",
           backgroundClip: "text",
           WebkitBackgroundClip: "text",
           color: "transparent",
