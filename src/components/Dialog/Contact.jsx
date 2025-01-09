@@ -16,6 +16,7 @@ import {
   Wrench,
   ExternalLink,
   Phone,
+  User,
 } from "lucide-react";
 
 const ContactDialog = ({ Trigger, open, onOpenChange }) => {
@@ -50,6 +51,33 @@ const ContactDialog = ({ Trigger, open, onOpenChange }) => {
                 dedicated team is ready to assist you. Reach out to us through
                 email or contact our team members directly.
               </p>
+            </div>
+          </div>
+
+          <div className="bg-black/80 rounded-lg border-2 border-gray-700/80 p-4 sm:p-6 hover:border-amber-500/50 transition-all duration-300 group mb-4">
+            <div className="relative">
+              <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                <User className="w-6 h-6 sm:w-8 sm:h-8 text-amber-400 group-hover:scale-110 transition-transform" />
+                <h3 className="font-poppins text-lg sm:text-xl font-bold text-amber-300/90">
+                  Mentor
+                </h3>
+              </div>
+              <div className="space-y-2">
+                <p className="text-amber-100/90 font-semibold text-base sm:text-lg">
+                  Dr R Venkatesan
+                </p>
+                <p className="text-amber-200/70 text-sm sm:text-base">
+                  Professor of Practice Anna University & 
+                  Adj Prof University of Massachusetts Dartmouth USA
+                </p>
+                <a
+                  href="tel:+91 94443 99829"
+                  className="flex items-center gap-2 text-amber-400/80 hover:text-amber-300 transition-colors mt-2 text-sm sm:text-base"
+                >
+                  <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span>+91 94443 99829</span>
+                </a>
+              </div>
             </div>
           </div>
 
