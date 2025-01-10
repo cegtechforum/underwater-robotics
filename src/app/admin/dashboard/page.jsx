@@ -114,49 +114,57 @@ const AdminDashboard = () => {
 
   return (
     <>
-    <div className="bg-gradient-to-br from-indigo-50 to-white min-h-screen">
-      <div className="container mx-auto p-6 space-y-6 relative">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-indigo-800 text-center flex-1">
-            Team Details
-          </h1>
-          <button
-            onClick={handleSignOut}
-            className="text-red-600 hover:text-red-800 transition-colors duration-300 flex items-center space-x-2"
-            disabled={signoutLoading}
-          >
-            {!signoutLoading ? (
-              <LogOut className="h-4 w-4 transition-transform duration-300 hover:rotate-6 hover:scale-110" />
-            ) : (
-              <Loader2 className="animate-spin h-5 w-5 mr-2 inline" />
-            )}
-            <span>{signoutLoading ? "Signing Out..." : "Sign Out"}</span>
-          </button>
-        </div>
-
-        {currentView === "dashboard" && (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {teams.map((team, index) => (
-              <TeamCard
-                key={index}
-                team={team}
-                onViewDetails={handleViewDetails}
-              />
-            ))}
+      <div className="bg-gradient-to-br from-indigo-50 to-white min-h-screen">
+        <div className="container mx-auto p-6 space-y-6 relative">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-3xl font-bold text-indigo-800 text-center flex-1">
+              Team Details
+            </h1>
+            <button
+              onClick={handleSignOut}
+              className="text-red-600 hover:text-red-800 transition-colors duration-300 flex items-center space-x-2"
+              disabled={signoutLoading}
+            >
+              {!signoutLoading ? (
+                <LogOut className="h-4 w-4 transition-transform duration-300 hover:rotate-6 hover:scale-110" />
+              ) : (
+                <Loader2 className="animate-spin h-5 w-5 mr-2 inline" />
+              )}
+              <span>{signoutLoading ? "Signing Out..." : "Sign Out"}</span>
+            </button>
           </div>
-        )}
 
-        {currentView === "team-details" && selectedTeam && (
-          <TeamDetailsPage
-            team={selectedTeam}
-            onBack={handleBackToDashboard}
-            onStatusChange={handleStatusChange}
-            onDeleteTeam={handleDeleteTeam}
-          />
-        )}
+          {currentView === "dashboard" && (
+            <>
+              {teams.length > 0 ? (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {teams.map((team, index) => (
+                    <TeamCard
+                      key={index}
+                      team={team}
+                      onViewDetails={handleViewDetails}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center text-gray-600 font-medium">
+                  No teams found
+                </div>
+              )}
+            </>
+          )}
+
+          {currentView === "team-details" && selectedTeam && (
+            <TeamDetailsPage
+              team={selectedTeam}
+              onBack={handleBackToDashboard}
+              onStatusChange={handleStatusChange}
+              onDeleteTeam={handleDeleteTeam}
+            />
+          )}
+        </div>
       </div>
-    </div>
-    <Footer variant="default" />
+      <Footer variant="default" />
     </>
   );
 };
