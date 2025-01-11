@@ -38,6 +38,12 @@ const PrizeDialog = ({ Trigger, open, onOpenChange }) => {
           <div className="my-8 text-center">
             <div className="relative inline-block">
               <Crown className="w-12 h-12 sm:w-16 sm:h-16 text-yellow-400/80 animate-pulse mx-auto mb-4" />
+              <div className="text-4xl sm:text-5xl md:text-6xl font-bold text-yellow-300/90 font-poppins">
+                ₹50,000
+              </div>
+              <div className="text-lg sm:text-xl text-yellow-200/70 mt-2">
+                Total Prize Pool
+              </div>
             </div>
           </div>
 
@@ -45,7 +51,7 @@ const PrizeDialog = ({ Trigger, open, onOpenChange }) => {
             <div className="text-center space-y-4 sm:space-y-6">
               <h2 className="font-poppins tracking-wide text-yellow-300/90 font-bold text-xl sm:text-2xl md:text-3xl flex flex-wrap items-center justify-center gap-2 sm:gap-3">
                 <Sparkles className="w-6 h-6 sm:w-8 sm:h-8" />
-                Exciting Prize Pool Coming Soon!
+                Win Amazing Prizes!
                 <Sparkles className="w-6 h-6 sm:w-8 sm:h-8" />
               </h2>
 
@@ -72,7 +78,7 @@ const PrizeDialog = ({ Trigger, open, onOpenChange }) => {
               {
                 icon: <Gift className="w-5 h-5 sm:w-6 sm:h-6" />,
                 title: "Cash Prizes",
-                description: "Substantial rewards awaiting winners",
+                description: "Win your share of ₹50,000 in prizes",
               },
               {
                 icon: <Star className="w-5 h-5 sm:w-6 sm:h-6" />,
@@ -107,13 +113,11 @@ const PrizeDialog = ({ Trigger, open, onOpenChange }) => {
               <div className="flex items-center justify-center gap-2 text-yellow-300/80">
                 <Timer className="w-4 h-4 sm:w-5 sm:h-5 animate-pulse" />
                 <span className="font-semibold text-sm sm:text-base">
-                  Stay Tuned!
+                  Ready to Participate?
                 </span>
               </div>
               <p className="text-base sm:text-lg font-poppins">
-                Prize details will be announced shortly. Get ready for an
-                exciting reward package that celebrates innovation and
-                excellence!
+                Join now and compete for incredible prizes that celebrate innovation and excellence!
               </p>
             </div>
           </div>
