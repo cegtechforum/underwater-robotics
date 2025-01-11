@@ -28,14 +28,14 @@ export function FileUploadInput2({ email, disabled }) {
   };
 
   const handleConfirmSubmit = async () => {
-    const deadline = new Date("2025-03-10T18:00:00+05:30");
-    const currentDate = new Date();
+    // const deadline = new Date("2025-03-10T18:00:00+05:30");
+    // const currentDate = new Date();
 
-    if (currentDate >= deadline) {
-      setIsDeadlinePassed(true);
-      toast.error("Submission deadline has passed.");
-      return;
-    }
+    // if (currentDate >= deadline) {
+    //   setIsDeadlinePassed(true);
+    //   toast.error("Submission deadline has passed.");
+    //   return;
+    // }
 
     if (files.length === 0) {
       toast.error("No file uploaded. Please upload a file first.");
