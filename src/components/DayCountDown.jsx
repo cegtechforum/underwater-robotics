@@ -11,7 +11,7 @@ const DayCountDown = () => {
     seconds: 0,
   });
 
-  const startDate = new Date("2025-01-10T18:00:00").getTime();
+  const startDate = new Date("2025-01-11T20:00:00").getTime();
   const endDate = new Date("2025-02-05T23:59:00").getTime();
   const totalDuration = endDate - startDate;
 

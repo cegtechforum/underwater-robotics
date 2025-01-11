@@ -28,7 +28,7 @@ export function FileUploadInput2({ email, disabled }) {
   };
 
   const handleConfirmSubmit = async () => {
-    const deadline = new Date("2025-01-11T02:02:00+05:30");
+    const deadline = new Date("2025-03-10T18:00:00+05:30");
     const currentDate = new Date();
 
     if (currentDate >= deadline) {
