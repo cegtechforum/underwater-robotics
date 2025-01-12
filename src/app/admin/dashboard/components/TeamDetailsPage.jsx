@@ -184,26 +184,27 @@ const TeamDetailsPage = ({ team, onBack, onStatusChange, onDeleteTeam }) => {
         <div className="bg-white shadow-2xl rounded-2xl overflow-hidden">
           {/* Header Section */}
           <div className="p-4 sm:p-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-white hover:bg-white/20"
-                onClick={onBack}
-              >
-                <ArrowLeft className="h-5 w-5 sm:h-6 sm:w-6" />
-              </Button>
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full">
-                <div className="flex items-center gap-2 flex-grow">
-                  <LayoutGrid className="h-6 w-6 sm:h-7 sm:w-7" />
-                  <h1 className="text-xl sm:text-2xl md:text-4xl font-bold">
-                    {team.teamName}
-                  </h1>
-                </div>
-                <StatusBadge status={selectedStatus} />
-              </div>
-            </div>
-          </div>
+  <div className="flex flex-col sm:flex-row items-center gap-4">
+    <div className="flex items-center gap-3 w-full">
+      <Button
+        variant="ghost"
+        size="icon"
+        className="text-white hover:bg-white/20"
+        onClick={onBack}
+      >
+        <ArrowLeft className="h-5 w-5 sm:h-6 sm:w-6" />
+      </Button>
+      <div className="flex items-center gap-2 flex-grow">
+        <LayoutGrid className="h-6 w-6 sm:h-7 sm:w-7" />
+        <h1 className="text-xl sm:text-2xl md:text-4xl font-bold">
+          {team.teamName}
+        </h1>
+      </div>
+      <StatusBadge status={selectedStatus} />
+    </div>
+  </div>
+</div>
+
 
           {/* Main Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-4 sm:p-6">
