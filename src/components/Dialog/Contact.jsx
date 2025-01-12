@@ -103,7 +103,7 @@ const ContactDialog = ({ Trigger, open, onOpenChange }) => {
                   className="flex items-center text-teal-400/80 hover:text-teal-300 transition-colors group/link text-sm sm:text-base"
                 >
                   <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
-                  <span>&nbsp;underwaterrobotics@cegtechforum.in</span>
+                  <span>&nbsp;underwaterrobotics@cegtechforum.in&nbsp;</span>
                   <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 opacity-0 group-hover/link:opacity-100 transition-opacity" />
                 </a>
 
