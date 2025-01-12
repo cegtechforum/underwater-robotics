@@ -130,7 +130,7 @@ const AdminDashboard = () => {
               ) : (
                 <Loader2 className="animate-spin h-5 w-5 mr-2 inline" />
               )}
-              <span>{signoutLoading ? "Signing Out..." : "Sign Out"}</span>
+              <span className="hidden md:inline">{signoutLoading ? "Signing Out..." : "Sign Out"}</span>
             </button>
           </div>
 

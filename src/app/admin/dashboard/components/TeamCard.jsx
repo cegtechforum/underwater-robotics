@@ -19,10 +19,10 @@ const TeamCard = ({ team, onViewDetails }) => {
     >
       <CardHeader className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white flex flex-row items-center justify-between space-y-0 pb-2 p-4 rounded-t-xl">
         <CardTitle className="text-lg font-bold flex items-center gap-2">
-          <LayoutGrid className="h-5 w-5" />
+          <LayoutGrid size={20} />
           {team.teamName}
         </CardTitle>
-        <StatusBadge status={team.submission != null ? team.submission.status :"No Status"} />
+        <StatusBadge status={team.submission != null ? team.submission.status : "No Status"} />
       </CardHeader>
 
       <CardContent className="p-4 bg-gray-50">
@@ -36,7 +36,7 @@ const TeamCard = ({ team, onViewDetails }) => {
               key={text}
               className="flex items-center gap-3 p-2 rounded-lg"
             >
-              <Icon className="h-5 w-5 text-indigo-500" />
+              <Icon size={20} className="text-indigo-500" />
               <span className="text-black font-medium">{text}</span>
             </div>
           ))}
