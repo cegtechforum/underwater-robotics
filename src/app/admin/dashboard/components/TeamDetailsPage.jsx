@@ -55,7 +55,8 @@ const TeamDetailsPage = ({ team, onBack, onStatusChange, onDeleteTeam }) => {
   const [selectedStatus, setSelectedStatus] = useState(
     team.submission != null ? team.submission.status : "No Status"
   );
-  const [isResetPasswordDialogOpen, setIsResetPasswordDialogOpen] = useState(false);
+  const [isResetPasswordDialogOpen, setIsResetPasswordDialogOpen] =
+    useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [isStatusChanged, setIsStatusChanged] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -68,7 +69,11 @@ const TeamDetailsPage = ({ team, onBack, onStatusChange, onDeleteTeam }) => {
     if (team && team.email) {
       try {
         setIsDeleting(true);
-        const response = await apiCall("/delete-team", { email: team.email }, "DELETE");
+        const response = await apiCall(
+          "/delete-team",
+          { email: team.email },
+          "DELETE"
+        );
         if (response.status === 200) {
           toast.success("Team deleted successfully.");
           onDeleteTeam(team);
@@ -151,7 +156,10 @@ const TeamDetailsPage = ({ team, onBack, onStatusChange, onDeleteTeam }) => {
   const handleDownload = async (pdfFile, roundLabel) => {
     if (pdfFile) {
       try {
-        const pdfData = pdfFile instanceof Uint8Array ? pdfFile : new Uint8Array(Object.values(pdfFile));
+        const pdfData =
+          pdfFile instanceof Uint8Array
+            ? pdfFile
+            : new Uint8Array(Object.values(pdfFile));
         if (pdfData.length === 0) {
           console.error("PDF data is empty");
           return;
@@ -184,29 +192,28 @@ const TeamDetailsPage = ({ team, onBack, onStatusChange, onDeleteTeam }) => {
         <div className="bg-white shadow-2xl rounded-2xl overflow-hidden">
           {/* Header Section */}
           <div className="p-4 sm:p-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
-  <div className="flex flex-col sm:flex-row items-center gap-4">
-    <div className="flex items-center gap-3 w-full">
-      <Button
-        variant="ghost"
-        size="icon"
-        className="text-white hover:bg-white/20"
-        onClick={onBack}
-      >
-        <ArrowLeft className="h-5 w-5 sm:h-6 sm:w-6" />
-      </Button>
-      <div className="flex items-center gap-2 flex-grow">
-        <LayoutGrid className="h-6 w-6 sm:h-7 sm:w-7" />
-        <h1 className="text-xl sm:text-2xl md:text-4xl font-bold">
-          {team.teamName}
-        </h1>
-      </div>
-    </div>
-    <div className="w-full items-center flex justify-center sm:justify-end gap-2">
-      <StatusBadge status={selectedStatus} />
-    </div>
-  </div>
-</div>
-
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <div className="flex items-center gap-3 w-full">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-white hover:bg-white/20"
+                  onClick={onBack}
+                >
+                  <ArrowLeft className="h-5 w-5 sm:h-6 sm:w-6" />
+                </Button>
+                <div className="flex items-center gap-2 flex-grow">
+                  <LayoutGrid className="h-6 w-6 sm:h-7 sm:w-7" />
+                  <h1 className="text-xl sm:text-2xl md:text-4xl font-bold">
+                    {team.teamName}
+                  </h1>
+                </div>
+              </div>
+              <div className="w-full items-center flex justify-center sm:justify-end gap-2">
+                <StatusBadge status={selectedStatus} />
+              </div>
+            </div>
+          </div>
 
           {/* Main Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-4 sm:p-6">
@@ -222,7 +229,11 @@ const TeamDetailsPage = ({ team, onBack, onStatusChange, onDeleteTeam }) => {
                     { icon: School, label: "College", value: team.collegeName },
                     { icon: MapPin, label: "District", value: team.district },
                     { icon: Mail, label: "Email", value: team.email },
-                    { icon: FileText, label: "Project Type", value: team.projectType },
+                    {
+                      icon: FileText,
+                      label: "Project Type",
+                      value: team.projectType,
+                    },
                   ].map(({ icon: Icon, label, value }) => (
                     <div
                       key={label}
@@ -249,9 +260,21 @@ const TeamDetailsPage = ({ team, onBack, onStatusChange, onDeleteTeam }) => {
                 </h2>
                 <div className="space-y-3">
                   {[
-                    { icon: User, label: "Name", value: team.mentorName || "Not provided" },
-                    { icon: Mail, label: "Email", value: team.mentorEmail || "Not provided" },
-                    { icon: Phone, label: "Phone", value: team.mentorPhone || "Not provided" },
+                    {
+                      icon: User,
+                      label: "Name",
+                      value: team.mentorName || "Not provided",
+                    },
+                    {
+                      icon: Mail,
+                      label: "Email",
+                      value: team.mentorEmail || "Not provided",
+                    },
+                    {
+                      icon: Phone,
+                      label: "Phone",
+                      value: team.mentorPhone || "Not provided",
+                    },
                   ].map(({ icon: Icon, label, value }) => (
                     <div
                       key={label}
@@ -342,7 +365,11 @@ const TeamDetailsPage = ({ team, onBack, onStatusChange, onDeleteTeam }) => {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {[
                           { icon: User, label: "Name", value: member.name },
-                          { icon: FileText, label: "Roll No", value: member.rollNo },
+                          {
+                            icon: FileText,
+                            label: "Roll No",
+                            value: member.rollNo,
+                          },
                           { icon: Mail, label: "Email", value: member.email },
                           { icon: Phone, label: "Phone", value: member.phone },
                         ].map(({ icon: Icon, label, value }) => (
@@ -530,8 +557,8 @@ const TeamDetailsPage = ({ team, onBack, onStatusChange, onDeleteTeam }) => {
                     <AlertDialogHeader>
                       <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                       <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete
-                        the team.
+                        This action cannot be undone. This will permanently
+                        delete the team.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter className="flex flex-col-reverse sm:flex-row gap-2">
