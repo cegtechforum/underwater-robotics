@@ -200,6 +200,8 @@ const TeamDetailsPage = ({ team, onBack, onStatusChange, onDeleteTeam }) => {
           {team.teamName}
         </h1>
       </div>
+    </div>
+    <div className="w-full items-center flex justify-center sm:justify-end gap-2">
       <StatusBadge status={selectedStatus} />
     </div>
   </div>
