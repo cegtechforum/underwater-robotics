@@ -47,12 +47,9 @@ const TeamCard = ({ team, onViewDetails }) => {
         </div>
       </CardContent>
 
-      <div className="relative">
-  <CardFooter className="absolute bottom-0 w-full bg-gray-100 p-4 text-sm text-gray-500 font-medium rounded-b-xl">
-    Click to view full details
-  </CardFooter>
-</div>
-
+      <CardFooter className="bg-gray-100 p-4 text-sm text-gray-500 font-medium rounded-b-xl">
+        Click to view full details
+      </CardFooter>
     </Card>
   );
 };
