@@ -3,11 +3,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { signOut, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { LogOut, Loader2 } from "lucide-react";
+import { LogOut, Loader2, BellRing } from "lucide-react";
 import TeamCard from "./components/TeamCard";
 import TeamDetailsPage from "./components/TeamDetailsPage";
 import Footer from "@/components/Footer";
 import TeamStatistics from "./components/TeamStatistics";
+import { toast, Toaster } from "react-hot-toast";
+import apiCall from "@/lib/apiCall";
 
 const AdminDashboard = () => {
   const [currentView, setCurrentView] = useState("dashboard");
@@ -16,6 +18,7 @@ const AdminDashboard = () => {
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
   const [signoutLoading, setSignoutLoading] = useState(false);
+  const [sendingEmails, setSendingEmails] = useState(false);
 
   const router = useRouter();
 
@@ -32,14 +35,14 @@ const AdminDashboard = () => {
       }
 
       try {
-        const response = await fetch("/api/get-all-teams");
-        const data = await response.json();
+        // Replace fetch with apiCall
+        const response = await apiCall("/get-all-teams", null, "GET");
 
-        if (response.ok) {
-          setTeams(data.teams);
-          console.log("Teams after fetch:", data.teams);
+        if (response.status === 200) {
+          setTeams(response.teams);
+          // console.log("Teams after apiCall:", response.teams);
         } else {
-          console.error("Error fetching teams:", data.error);
+          console.error("Error fetching teams:", response.message);
         }
       } catch (error) {
         console.error("An error occurred while fetching teams:", error);
@@ -106,6 +109,28 @@ const AdminDashboard = () => {
     setSignoutLoading(false);
   };
 
+  const handleSendReminders = async () => {
+    if (sendingEmails) return;
+
+    setSendingEmails(true);
+    try {
+      const response = await apiCall("/reminder-mail", { teams }, "POST");
+
+      const data = response;
+
+      if (response.status === 200) {
+        toast.success(data.message);
+      } else {
+        throw new Error(data.error || "Failed to send emails");
+      }
+    } catch (error) {
+      // console.error("Error sending reminders:", error);
+      toast.error(error.message);
+    } finally {
+      setSendingEmails(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -116,28 +141,47 @@ const AdminDashboard = () => {
 
   return (
     <>
+      <Toaster />
       <div className="bg-gradient-to-br from-indigo-50 to-white min-h-screen">
         <div className="container mx-auto p-6 space-y-6 relative">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-3xl font-bold text-indigo-800 text-center flex-1">
               Team Details
             </h1>
-            <button
-              onClick={handleSignOut}
-              className="text-red-600 hover:text-red-800 transition-colors duration-300 flex items-center space-x-2"
-              disabled={signoutLoading}
-            >
-              {!signoutLoading ? (
-                <LogOut className="h-4 w-4 transition-transform duration-300 hover:rotate-6 hover:scale-110" />
-              ) : (
-                <Loader2 className="animate-spin h-5 w-5 mr-2 inline" />
-              )}
-              <span className="hidden md:inline">
-                {signoutLoading ? "Signing Out..." : "Sign Out"}
-              </span>
-            </button>
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={handleSendReminders}
+                className="bg-none border border-transparent text-blue-600 px-4 py-2 rounded-md hover:text-blue-700 hover:border-blue-700 transition-colors duration-300 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={sendingEmails}
+              >
+                {!sendingEmails ? (
+                  <>
+                    <BellRing className="h-4 w-4" />
+                    <span className="hidden md:inline">Send Reminders</span>
+                  </>
+                ) : (
+                  <>
+                    <Loader2 className="animate-spin h-4 w-4" />
+                    <span className="hidden md:inline">Sending...</span>
+                  </>
+                )}
+              </button>
+              <button
+                onClick={handleSignOut}
+                className="text-red-600 hover:text-red-800 transition-colors duration-300 flex items-center space-x-2"
+                disabled={signoutLoading}
+              >
+                {!signoutLoading ? (
+                  <LogOut className="h-4 w-4 transition-transform duration-300 hover:rotate-6 hover:scale-110" />
+                ) : (
+                  <Loader2 className="animate-spin h-5 w-5 mr-2 inline" />
+                )}
+                <span className="hidden md:inline">
+                  {signoutLoading ? "Signing Out..." : "Sign Out"}
+                </span>
+              </button>
+            </div>
           </div>
-
           {/* Hide TeamStatistics if a team card is clicked */}
           {currentView === "dashboard" && <TeamStatistics teams={teams} />}
 
