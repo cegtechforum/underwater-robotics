@@ -7,6 +7,7 @@ import { LogOut, Loader2 } from "lucide-react";
 import TeamCard from "./components/TeamCard";
 import TeamDetailsPage from "./components/TeamDetailsPage";
 import Footer from "@/components/Footer";
+import TeamStatistics from "./components/TeamStatistics";
 
 const AdminDashboard = () => {
   const [currentView, setCurrentView] = useState("dashboard");
@@ -36,6 +37,7 @@ const AdminDashboard = () => {
 
         if (response.ok) {
           setTeams(data.teams);
+          console.log("Teams after fetch:", data.teams);
         } else {
           console.error("Error fetching teams:", data.error);
         }
@@ -130,9 +132,14 @@ const AdminDashboard = () => {
               ) : (
                 <Loader2 className="animate-spin h-5 w-5 mr-2 inline" />
               )}
-              <span className="hidden md:inline">{signoutLoading ? "Signing Out..." : "Sign Out"}</span>
+              <span className="hidden md:inline">
+                {signoutLoading ? "Signing Out..." : "Sign Out"}
+              </span>
             </button>
           </div>
+
+          {/* Hide TeamStatistics if a team card is clicked */}
+          {currentView === "dashboard" && <TeamStatistics teams={teams} />}
 
           {currentView === "dashboard" && (
             <>
