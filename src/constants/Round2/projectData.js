@@ -5,8 +5,8 @@ export const projectData = {
       textColor: "text-blue-800",
       content: [
         "Follow the given format and create an IEEE-format paper.",
-        "A PPT not exceeding 5 slides.",
-        "Submit the PPT as PDF.",
+        "A PPT not exceeding 5 slides should be brought on the day of competition.",
+        "Submit the IEEE format paper as PDF.",
       ],
     },
     SIMULATION: {
@@ -16,9 +16,9 @@ export const projectData = {
       content: [
         "Use any software to design an underwater robot model and simulate.",
         "Create a report with outputs of the simulation.",
-        "A PPT not exceeding 5 slides.",
-        "Upload the video of the simulation in a drive link and attach the link in the PPT.",
-        "Submit the PPT as PDF.",
+        "Upload the videos of the simulation in a drive link and attach the link in the report.",
+        "A PPT not exceeding 5 slides should be brought on the day of competition.",
+        "Submit the report as PDF.",
       ],
     },
     HARDWARE_DEMO: {
@@ -27,10 +27,10 @@ export const projectData = {
       textColor: "text-red-800",
       content: [
         "Create an underwater robot and perform a live demo.",
-        "Attach the videos of the demo in a drive link and attach the link in the PPT.",
         "Create a report with outputs of the demo.",
-        "A PPT not exceeding 5 slides.",
-        "Submit the PPT as PDF.",
+        "Upload the videos of the demo in a drive link and attach the link in the report.",
+        "A PPT not exceeding 5 slides should be brought on the day of competition.",
+        "Submit the report as PDF.",
       ],
     },
   };
