@@ -188,7 +188,7 @@ const TeamDetailsPage = ({ team, onBack, onStatusChange, onDeleteTeam }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <Toaster position="top-right" />
+        <Toaster />
         <div className="bg-white shadow-2xl rounded-2xl overflow-hidden">
           {/* Header Section */}
           <div className="p-4 sm:p-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
