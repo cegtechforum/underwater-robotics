@@ -183,7 +183,6 @@ const AdminDashboard = () => {
           </div>
           {/* Hide TeamStatistics if a team card is clicked */}
           {currentView === "dashboard" && <TeamStatistics teams={teams} />}
-
           {currentView === "dashboard" && (
             <>
               {teams.length > 0 ? (
