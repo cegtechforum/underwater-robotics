@@ -113,18 +113,23 @@ const AdminDashboard = () => {
 
     setSendingEmails(true);
     try {
-      const response = await apiCall("/reminder-mail", { teams }, "POST");
-
-      const data = response;
-
-      if (response.status === 200) {
-        toast.success(data.message);
-      } else {
-        throw new Error(data.error || "Failed to send emails");
+      const essentialData = teams.map(({ id, email }) => ({ id, email }));
+      const batchSize = 50;
+      for (let i = 0; i < essentialData.length; i += batchSize) {
+        const batch = essentialData.slice(i, i + batchSize);
+        const response = await apiCall(
+          "/reminder-mail",
+          { teams: batch },
+          "POST"
+        );
+        if (response.status !== 200) {
+          throw new Error(response.message || "Failed to send emails");
+        }
       }
+      toast.success("Reminders sent successfully!");
+      toast.success("response.message");
     } catch (error) {
-      // console.error("Error sending reminders:", error);
-      toast.error(error.message);
+      toast.error(error.message || "An error occurred");
     } finally {
       setSendingEmails(false);
     }
