@@ -1,6 +1,10 @@
 import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
 
+function delay(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
 export async function POST(req) {
   try {
     const { teams } = await req.json();
@@ -153,13 +157,15 @@ export async function POST(req) {
 </html>
 `;
 
-    const emailPromises = teams.map(async (team) => {
+    const results = [];
+    for (const team of teams) {
       if (!team.email) {
-        return {
+        results.push({
           teamName: team.collegeName,
           status: "failed",
           error: "No email address",
-        };
+        });
+        continue;
       }
 
       const mailOptions = {
@@ -171,18 +177,18 @@ export async function POST(req) {
 
       try {
         await transporter.sendMail(mailOptions);
-        return { teamName: team.collegeName, status: "success" };
+        results.push({ teamName: team.collegeName, status: "success" });
       } catch (error) {
         console.error(`Failed to send email to ${team.email}:`, error);
-        return {
+        results.push({
           teamName: team.collegeName,
           status: "failed",
           error: error.message,
-        };
+        });
       }
-    });
 
-    const results = await Promise.all(emailPromises);
+      await delay(2000);
+    }
 
     const successCount = results.filter((r) => r.status === "success").length;
     const failureCount = results.filter((r) => r.status === "failed").length;
