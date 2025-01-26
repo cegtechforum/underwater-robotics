@@ -35,7 +35,6 @@ const AdminDashboard = () => {
       }
 
       try {
-        // Replace fetch with apiCall
         const response = await apiCall("/get-all-teams", null, "GET");
 
         if (response.status === 200) {

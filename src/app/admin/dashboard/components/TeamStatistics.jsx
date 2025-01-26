@@ -3,6 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { HardDrive, Box, FileSpreadsheet } from "lucide-react";
 
 const TeamStatistics = ({ teams }) => {
+  const submitted = useMemo(() => teams.filter((team) => team.submission).length, [teams]);
+  const notSubmitted = useMemo(() => teams.length - submitted, [teams]);
+  
   const stats = useMemo(() => {
     const counts = teams.reduce((acc, team) => {
       const type = team.projectType || "";
@@ -77,6 +80,10 @@ const TeamStatistics = ({ teams }) => {
           })}
         </div>
         <div className="mt-6 pt-4 border-t text-right text-sm text-gray-600">
+          Submitted: <span className="font-semibold">{submitted}</span>
+          <span className="mx-2">|</span>
+          Not Submitted: <span className="font-semibold">{notSubmitted}</span>
+          <span className="mx-2">|</span>
           Total Teams: <span className="font-semibold">{teams.length}</span>
         </div>
       </CardContent>
