@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const { teams } = await req.json();
+    const { emails } = await req.json();
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -153,48 +153,47 @@ export async function POST(req) {
 </html>
 `;
 
-    const emailPromises = teams.map(async (team) => {
-      if (!team.email) {
-        return {
-          teamName: team.collegeName,
-          status: "failed",
-          error: "No email address",
-        };
-      }
+    if (!emails || !Array.isArray(emails) || emails.length === 0) {
+      return NextResponse.json(
+        { error: "No email addresses provided" },
+        { status: 400 }
+      );
+    }
 
+    const emailPromises = emails.map(async (email) => {
       const mailOptions = {
         from: `Underwater Robotics <${process.env.SMTP_USER}>`,
-        to: team.email,
+        to: email,
         subject: "IMPORTANT: Project Submission Deadline Reminder",
         html: htmlTemplate,
       };
 
       try {
         await transporter.sendMail(mailOptions);
-        return { teamName: team.collegeName, status: "success" };
+        return { email, status: "success" };
       } catch (error) {
-        console.error(`Failed to send email to ${team.email}:`, error);
-        return {
-          teamName: team.collegeName,
-          status: "failed",
-          error: error.message,
+        console.error(`Failed to send email to ${email}:`, error);
+        return { 
+          email, 
+          status: "failed", 
+          error: error.message 
         };
       }
     });
 
     const results = await Promise.all(emailPromises);
 
-    const successCount = results.filter((r) => r.status === "success").length;
-    const failureCount = results.filter((r) => r.status === "failed").length;
+    const successCount = results.filter(r => r.status === "success").length;
+    const failedCount = results.filter(r => r.status === "failed").length;
 
     return NextResponse.json({
-      message: `Emails sent: ${successCount} successful, ${failureCount} failed`,
-      results,
+      message: `Emails sent: ${successCount} successful, ${failedCount} failed`,
+      results
     });
   } catch (error) {
     console.error("Email sending error:", error);
     return NextResponse.json(
-      { error: "Failed to send emails" },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }

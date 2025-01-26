@@ -110,26 +110,36 @@ const AdminDashboard = () => {
 
   const handleSendReminders = async () => {
     if (sendingEmails) return;
-
+  
     setSendingEmails(true);
     try {
-      const essentialData = teams.map(({ id, email }) => ({ id, email }));
-      const batchSize = 50;
-      for (let i = 0; i < essentialData.length; i += batchSize) {
-        const batch = essentialData.slice(i, i + batchSize);
-        const response = await apiCall(
-          "/reminder-mail",
-          { teams: batch },
-          "POST"
-        );
-        if (response.status !== 200) {
-          throw new Error(response.message || "Failed to send emails");
-        }
+      const emails = teams.map(team => team.email).filter(email => email);
+  
+      if (emails.length === 0) {
+        toast.error("No valid email addresses found");
+        return;
       }
-      toast.success("Reminders sent successfully!");
-      toast.success("response.message");
+      const response = await apiCall("/reminder-mail", { emails }, "POST");
+  
+      if (response.status === 200) {
+        toast.success(response.message);
+        
+        const successEmails = response.results
+          .filter(result => result.status === "success")
+          .map(result => result.email);
+        
+        const failedEmails = response.results
+          .filter(result => result.status === "failed")
+          .map(result => result.email);
+  
+        if (failedEmails.length > 0) {
+          toast.warning(`Failed to send emails to: ${failedEmails.join(", ")}`);
+        }
+      } else {
+        throw new Error(response.error || "Failed to send emails");
+      }
     } catch (error) {
-      toast.error(error.message || "An error occurred");
+      toast.error(error.message);
     } finally {
       setSendingEmails(false);
     }
