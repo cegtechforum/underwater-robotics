@@ -142,6 +142,7 @@ export async function POST(req) {
       from: email,
       to: "underwaterrobotics@cegtechforum.in",
       cc: "techteam@cegtechforum.in",
+      replyTo: email,
       subject: "Support Request",
       html: emailTemplate,
     };
