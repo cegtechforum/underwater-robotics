@@ -111,7 +111,7 @@ export async function POST(req) {
         <div class="email-container">
             <!-- Header -->
             <div class="email-header">
-                <h1>Project Submission Reminder</h1>
+                <h1>Abstract Submission Reminder</h1>
             </div>
 
             <!-- Body -->
@@ -129,9 +129,8 @@ export async function POST(req) {
                     <h2>Important Notes:</h2>
                     <ul>
                         <li>Submissions will not be accepted after the deadline.</li>
-                        <li>Ensure all project materials are complete and properly formatted.</li>
+                        <li>Ensure the abstract is complete and properly formatted.</li>
                         <li>Double-check all submission requirements.</li>
-                        <li>Make sure to test your project thoroughly before submission.</li>
                     </ul>
                 </div>
 
