@@ -119,7 +119,7 @@ export async function POST(req) {
                 <p>Dear Team,</p>
 
                 <div class="deadline-box">
-                    DEADLINE: February 5th, 2024, 11:59 PM IST
+                    DEADLINE: February 5th, 2025, 11:59 PM IST
                 </div>
 
                 <p>We hope this email finds you well. This is a friendly reminder about your upcoming project submission deadline.</p>
