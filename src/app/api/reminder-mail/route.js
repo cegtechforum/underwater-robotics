@@ -122,7 +122,7 @@ export async function POST(req) {
                     DEADLINE: February 5th, 2025, 11:59 PM IST
                 </div>
 
-                <p>We hope this email finds you well. This is a friendly reminder about your upcoming project submission deadline.</p>
+                <p>We hope this email finds you well. This is a friendly reminder about your upcoming abstract submission deadline.</p>
                 <p style="color: #666666; font-style: italic;">If you have already submitted your project, please disregard this message.</p>
 
                 <div class="notes">
