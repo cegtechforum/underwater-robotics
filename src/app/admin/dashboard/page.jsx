@@ -109,39 +109,67 @@ const AdminDashboard = () => {
   };
 
   const handleSendReminders = async () => {
+    // Prevent multiple simultaneous sends
     if (sendingEmails) return;
   
     setSendingEmails(true);
+    setProgress({ current: 0, total: teams.length });
+  
     try {
-      const emails = teams.map(team => team.email).filter(email => email);
+      // Filter out invalid emails and extract email addresses
+      const emails = teams
+        .map(team => team.email)
+        .filter(email => email && email.includes('@'));
   
       if (emails.length === 0) {
         toast.error("No valid email addresses found");
         return;
       }
-      const response = await apiCall("/reminder-mail", { emails }, "POST");
   
-      if (response.status === 200) {
-        toast.success(response.message);
-        
-        const successEmails = response.results
+      // Show initial toast
+      toast.info(`Sending reminders to ${emails.length} teams...`);
+  
+      // Send request to backend
+      const response = await fetch('/api/reminder-mail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ emails }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        const successEmails = data.results
           .filter(result => result.status === "success")
           .map(result => result.email);
         
-        const failedEmails = response.results
+        const failedEmails = data.results
           .filter(result => result.status === "failed")
           .map(result => result.email);
   
+        toast.success(`Successfully sent ${successEmails.length} reminders`);
+  
         if (failedEmails.length > 0) {
-          toast.warning(`Failed to send emails to: ${failedEmails.join(", ")}`);
+          toast.warning(
+            `Failed to send emails to ${failedEmails.length} recipients`, 
+            {
+              description: failedEmails.join(", "),
+              duration: 6000,
+            }
+          );
         }
       } else {
-        throw new Error(response.error || "Failed to send emails");
+        throw new Error(data.error || "Failed to send emails");
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error("Failed to send reminders", {
+        description: error.message,
+      });
     } finally {
       setSendingEmails(false);
+      setProgress(null);
     }
   };
 
