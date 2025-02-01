@@ -48,13 +48,9 @@ export function AdminLoginForm() {
       });
 
       if (res?.error) {
-        toast.error(res.error, {
-          duration: 5000,
-        });
+        toast.error(res.error);
       } else {
-        toast.success("Login successful!", {
-          duration: 5000,
-        });
+        toast.success("Login successful!");
         router.push("/admin/dashboard");
       }
     } catch (error) {
