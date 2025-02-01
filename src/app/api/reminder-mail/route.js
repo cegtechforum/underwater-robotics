@@ -1,16 +1,19 @@
 import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
 
-const BATCH_SIZE = 10;
-function chunkArray(array, size) {
-  const chunks = [];
-  for (let i = 0; i < array.length; i += size) {
-    chunks.push(array.slice(i, i + size));
-  }
-  return chunks;
-}
+export async function POST(req) {
+  try {
+    const { emails } = await req.json();
 
-const htmlTemplate = `
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+
+    const htmlTemplate = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -106,10 +109,12 @@ const htmlTemplate = `
 <body>
     <div class="email-wrapper">
         <div class="email-container">
+            <!-- Header -->
             <div class="email-header">
                 <h1>Abstract Submission Reminder</h1>
             </div>
 
+            <!-- Body -->
             <div class="email-body">
                 <p>Dear Team,</p>
 
@@ -137,6 +142,7 @@ const htmlTemplate = `
                 <p>Best regards,<br>The Organization Team</p>
             </div>
 
+            <!-- Footer -->
             <div class="email-footer">
                 <p>This is an automated message. Please do not reply to this email as it is sent from an unmonitored address.</p>
             </div>
@@ -146,23 +152,6 @@ const htmlTemplate = `
 </html>
 `;
 
-export async function POST(req) {
-  try {
-    const { emails } = await req.json();
-
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-      pool: true,
-      maxConnections: 5,
-      maxMessages: 100,
-      rateDelta: 1000,
-      rateLimit: 5,
-    });
-
     if (!emails || !Array.isArray(emails) || emails.length === 0) {
       return NextResponse.json(
         { error: "No email addresses provided" },
@@ -170,46 +159,41 @@ export async function POST(req) {
       );
     }
 
-    const emailBatches = chunkArray(emails, BATCH_SIZE);
-    const allResults = [];
+    const emailPromises = emails.map(async (email) => {
+      const mailOptions = {
+        from: `Underwater Robotics <${process.env.SMTP_USER}>`,
+        to: email,
+        subject: "IMPORTANT: Abstract Submission Deadline Reminder",
+        html: htmlTemplate,
+      };
 
-    for (const batch of emailBatches) {
-      const batchPromises = batch.map(async (email) => {
-        const mailOptions = {
-          from: `Underwater Robotics <${process.env.SMTP_USER}>`,
-          to: email,
-          subject: "IMPORTANT: Project Submission Deadline Reminder",
-          html: htmlTemplate,
+      try {
+        await transporter.sendMail(mailOptions);
+        return { email, status: "success" };
+      } catch (error) {
+        console.error(`Failed to send email to ${email}:`, error);
+        return { 
+          email, 
+          status: "failed", 
+          error: error.message 
         };
+      }
+    });
 
-        try {
-          await transporter.sendMail(mailOptions);
-          return { email, status: "success" };
-        } catch (error) {
-          console.error(`Failed to send email to ${email}:`, error);
-          return {
-            email,
-            status: "failed",
-            error: error.message,
-          };
-        }
-      });
+    const results = await Promise.all(emailPromises);
 
-      const batchResults = await Promise.all(batchPromises);
-      allResults.push(...batchResults);
-
-      await new Promise(resolve => setTimeout(resolve, 1000));
-    }
-
-    const successCount = allResults.filter((r) => r.status === "success").length;
-    const failedCount = allResults.filter((r) => r.status === "failed").length;
+    const successCount = results.filter(r => r.status === "success").length;
+    const failedCount = results.filter(r => r.status === "failed").length;
 
     return NextResponse.json({
       message: `Emails sent: ${successCount} successful, ${failedCount} failed`,
-      results: allResults,
+      results
     });
   } catch (error) {
     console.error("Email sending error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

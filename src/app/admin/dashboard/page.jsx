@@ -19,7 +19,6 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [signoutLoading, setSignoutLoading] = useState(false);
   const [sendingEmails, setSendingEmails] = useState(false);
-  const [progress, setProgress] = useState(null);
 
   const router = useRouter();
 
@@ -111,72 +110,41 @@ const AdminDashboard = () => {
 
   const handleSendReminders = async () => {
     if (sendingEmails) return;
-
+  
     setSendingEmails(true);
-    setProgress({ current: 0, total: teams.length });
-
     try {
-      const emails = teams
-        .map((team) => team.email)
-        .filter((email) => email && email.includes("@"));
-
+      const emails = teams.map(team => team.email).filter(email => email);
+  
       if (emails.length === 0) {
         toast.error("No valid email addresses found");
-        setSendingEmails(false);
         return;
       }
-
-      toast.info(`Sending reminders to ${emails.length} teams...`);
-
       const response = await apiCall("/reminder-mail", { emails }, "POST");
-
-      // Check if response is ok before trying to parse JSON
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+  
+      if (response.status === 200) {
+        toast.success(response.message);
+        
+        const successEmails = response.results
+          .filter(result => result.status === "success")
+          .map(result => result.email);
+        
+        const failedEmails = response.results
+          .filter(result => result.status === "failed")
+          .map(result => result.email);
+  
+        if (failedEmails.length > 0) {
+          toast.warning(`Failed to send emails to: ${failedEmails.join(", ")}`);
+        }
+      } else {
+        throw new Error(response.error || "Failed to send emails");
       }
-
-      const data = await response.json();
-
-      // Process successful emails
-      const successEmails = data.results?.filter(result => result.status === "success")
-        .map(result => result.email) || [];
-
-      // Process failed emails
-      const failedEmails = data.results?.filter(result => result.status === "failed")
-        .map(result => result.email) || [];
-
-      // Show success message if any emails were sent successfully
-      if (successEmails.length > 0) {
-        toast.success(`Successfully sent ${successEmails.length} reminders`);
-      }
-
-      // Show warning for failed emails
-      if (failedEmails.length > 0) {
-        toast.warning(
-          `Failed to send emails to ${failedEmails.length} recipients`,
-          {
-            description: failedEmails.join(", "),
-            duration: 6000,
-          }
-        );
-      }
-
-      // If no successful or failed emails were processed, show error
-      if (!data.results || data.results.length === 0) {
-        throw new Error("No email results returned from server");
-      }
-
     } catch (error) {
-      console.error("Email sending error:", error);
-      toast.error("Failed to send reminders", {
-        description: error.message || "An unexpected error occurred",
-        duration: 6000,
-      });
+      toast.error(error.message);
     } finally {
       setSendingEmails(false);
-      setProgress(null);
     }
   };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
