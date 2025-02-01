@@ -127,13 +127,7 @@ const AdminDashboard = () => {
 
       toast.info(`Sending reminders to ${emails.length} teams...`);
 
-      const response = await fetch("/api/reminder-mail", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ emails }),
-      });
+      const response = await apiCall("/reminder-mail", { emails }, "POST");
 
       const data = await response.json();
 
