@@ -111,7 +111,7 @@ export async function POST(req) {
         <div class="email-container">
             <!-- Header -->
             <div class="email-header">
-                <h1>Project Submission Reminder</h1>
+                <h1>Abstract Submission Reminder</h1>
             </div>
 
             <!-- Body -->
@@ -119,19 +119,18 @@ export async function POST(req) {
                 <p>Dear Team,</p>
 
                 <div class="deadline-box">
-                    DEADLINE: February 5th, 2024, 11:59 PM IST
+                    DEADLINE: February 5th, 2025, 11:59 PM IST
                 </div>
 
-                <p>We hope this email finds you well. This is a friendly reminder about your upcoming project submission deadline.</p>
+                <p>We hope this email finds you well. This is a friendly reminder about your upcoming abstract submission deadline.</p>
                 <p style="color: #666666; font-style: italic;">If you have already submitted your project, please disregard this message.</p>
 
                 <div class="notes">
                     <h2>Important Notes:</h2>
                     <ul>
                         <li>Submissions will not be accepted after the deadline.</li>
-                        <li>Ensure all project materials are complete and properly formatted.</li>
+                        <li>Ensure the abstract is complete and properly formatted.</li>
                         <li>Double-check all submission requirements.</li>
-                        <li>Make sure to test your project thoroughly before submission.</li>
                     </ul>
                 </div>
 
