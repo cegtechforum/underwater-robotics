@@ -122,6 +122,7 @@ const AdminDashboard = () => {
 
       if (emails.length === 0) {
         toast.error("No valid email addresses found");
+        setSendingEmails(false);
         return;
       }
 
@@ -129,41 +130,53 @@ const AdminDashboard = () => {
 
       const response = await apiCall("/reminder-mail", { emails }, "POST");
 
+      // Check if response is ok before trying to parse JSON
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
 
-      if (response.ok) {
-        const successEmails = data.results
-          .filter((result) => result.status === "success")
-          .map((result) => result.email);
+      // Process successful emails
+      const successEmails = data.results?.filter(result => result.status === "success")
+        .map(result => result.email) || [];
 
-        const failedEmails = data.results
-          .filter((result) => result.status === "failed")
-          .map((result) => result.email);
+      // Process failed emails
+      const failedEmails = data.results?.filter(result => result.status === "failed")
+        .map(result => result.email) || [];
 
+      // Show success message if any emails were sent successfully
+      if (successEmails.length > 0) {
         toast.success(`Successfully sent ${successEmails.length} reminders`);
-
-        if (failedEmails.length > 0) {
-          toast.warning(
-            `Failed to send emails to ${failedEmails.length} recipients`,
-            {
-              description: failedEmails.join(", "),
-              duration: 6000,
-            }
-          );
-        }
-      } else {
-        throw new Error(data.error || "Failed to send emails");
       }
+
+      // Show warning for failed emails
+      if (failedEmails.length > 0) {
+        toast.warning(
+          `Failed to send emails to ${failedEmails.length} recipients`,
+          {
+            description: failedEmails.join(", "),
+            duration: 6000,
+          }
+        );
+      }
+
+      // If no successful or failed emails were processed, show error
+      if (!data.results || data.results.length === 0) {
+        throw new Error("No email results returned from server");
+      }
+
     } catch (error) {
+      console.error("Email sending error:", error);
       toast.error("Failed to send reminders", {
-        description: error.message,
+        description: error.message || "An unexpected error occurred",
+        duration: 6000,
       });
     } finally {
       setSendingEmails(false);
       setProgress(null);
     }
   };
-
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
