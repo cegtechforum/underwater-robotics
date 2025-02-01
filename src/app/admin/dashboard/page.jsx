@@ -19,6 +19,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [signoutLoading, setSignoutLoading] = useState(false);
   const [sendingEmails, setSendingEmails] = useState(false);
+  const [progress, setProgress] = useState(null);
 
   const router = useRouter();
 
@@ -109,51 +110,47 @@ const AdminDashboard = () => {
   };
 
   const handleSendReminders = async () => {
-    // Prevent multiple simultaneous sends
     if (sendingEmails) return;
-  
+
     setSendingEmails(true);
     setProgress({ current: 0, total: teams.length });
-  
+
     try {
-      // Filter out invalid emails and extract email addresses
       const emails = teams
-        .map(team => team.email)
-        .filter(email => email && email.includes('@'));
-  
+        .map((team) => team.email)
+        .filter((email) => email && email.includes("@"));
+
       if (emails.length === 0) {
         toast.error("No valid email addresses found");
         return;
       }
-  
-      // Show initial toast
+
       toast.info(`Sending reminders to ${emails.length} teams...`);
-  
-      // Send request to backend
-      const response = await fetch('/api/reminder-mail', {
-        method: 'POST',
+
+      const response = await fetch("/api/reminder-mail", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ emails }),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         const successEmails = data.results
-          .filter(result => result.status === "success")
-          .map(result => result.email);
-        
+          .filter((result) => result.status === "success")
+          .map((result) => result.email);
+
         const failedEmails = data.results
-          .filter(result => result.status === "failed")
-          .map(result => result.email);
-  
+          .filter((result) => result.status === "failed")
+          .map((result) => result.email);
+
         toast.success(`Successfully sent ${successEmails.length} reminders`);
-  
+
         if (failedEmails.length > 0) {
           toast.warning(
-            `Failed to send emails to ${failedEmails.length} recipients`, 
+            `Failed to send emails to ${failedEmails.length} recipients`,
             {
               description: failedEmails.join(", "),
               duration: 6000,
