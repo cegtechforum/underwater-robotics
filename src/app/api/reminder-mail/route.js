@@ -138,7 +138,7 @@ export async function POST(req) {
                 </div>
 
                 <p>We hope this email finds you well. This is a friendly reminder about your upcoming abstract submission deadline.</p>
-                <p style="color: #666666; font-style: italic;">If you have already submitted your project, please disregard this message.</p>
+                <p style="color: #666666; font-style: italic;">If you have already submitted your abstract, please disregard this message.</p>
 
                 <div class="notes">
                     <h2>Important Notes:</h2>
