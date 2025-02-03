@@ -110,36 +110,80 @@ const AdminDashboard = () => {
 
   const handleSendReminders = async () => {
     if (sendingEmails) return;
-  
+
     setSendingEmails(true);
     try {
-      const emails = teams.map(team => team.email).filter(email => email);
-  
+      const emails = teams.map((team) => team.email).filter((email) => email);
+
       if (emails.length === 0) {
         toast.error("No valid email addresses found");
         return;
       }
-      const response = await apiCall("/reminder-mail", { emails }, "POST");
-  
-      if (response.status === 200) {
-        toast.success(response.message);
-        
-        const successEmails = response.results
-          .filter(result => result.status === "success")
-          .map(result => result.email);
-        
-        const failedEmails = response.results
-          .filter(result => result.status === "failed")
-          .map(result => result.email);
-  
-        if (failedEmails.length > 0) {
-          toast.warning(`Failed to send emails to: ${failedEmails.join(", ")}`);
+
+      const batchSize = 5;
+      const batches = [];
+      for (let i = 0; i < emails.length; i += batchSize) {
+        batches.push(emails.slice(i, i + batchSize));
+      }
+
+      let totalSuccess = 0;
+      let failedEmails = [];
+
+      for (let i = 0; i < batches.length; i++) {
+        try {
+          if (i > 0) {
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+          }
+
+          const response = await apiCall(
+            "/reminder-mail",
+            { emails: batches[i] },
+            "POST"
+          );
+
+          if (response.status === 200) {
+            if (response.results) {
+              const successes = response.results.filter(
+                (r) => r.status === "success"
+              );
+              const failures = response.results.filter(
+                (r) => r.status === "failed"
+              );
+
+              totalSuccess += successes.length;
+              failedEmails.push(...failures.map((f) => f.email));
+            } else {
+              totalSuccess += batches[i].length;
+            }
+          } else {
+            failedEmails.push(...batches[i]);
+          }
+
+          toast.success(
+            `Progress: ${totalSuccess} sent (Batch ${i + 1}/${batches.length})`
+          );
+        } catch (error) {
+          failedEmails.push(...batches[i]);
+          console.error(`Batch ${i + 1} error:`, error);
         }
-      } else {
-        throw new Error(response.error || "Failed to send emails");
+      }
+
+      if (totalSuccess > 0) {
+        toast.success(`Successfully sent ${totalSuccess} emails`);
+      }
+
+      if (failedEmails.length > 0) {
+        const failedMessage =
+          failedEmails.length > 3
+            ? `${failedEmails.slice(0, 3).join(", ")} and ${
+                failedEmails.length - 3
+              } more`
+            : failedEmails.join(", ");
+
+        toast.error(`Failed to send emails to: ${failedMessage}`);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message || "Failed to send emails");
     } finally {
       setSendingEmails(false);
     }

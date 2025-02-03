@@ -1,17 +1,32 @@
 import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
 
+const createTransporter = () => {
+  return nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+    pool: true,
+    maxConnections: 5,
+  });
+};
+
 export async function POST(req) {
+  let transporter = null;
+
   try {
     const { emails } = await req.json();
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
+    if (!emails || !Array.isArray(emails) || emails.length === 0) {
+      return NextResponse.json(
+        { error: "No email addresses provided" },
+        { status: 400 }
+      );
+    }
+
+    transporter = createTransporter();
 
     const htmlTemplate = `
 <!DOCTYPE html>
@@ -152,42 +167,35 @@ export async function POST(req) {
 </html>
 `;
 
-    if (!emails || !Array.isArray(emails) || emails.length === 0) {
-      return NextResponse.json(
-        { error: "No email addresses provided" },
-        { status: 400 }
-      );
-    }
+    const results = await Promise.all(
+      emails.map(async (email) => {
+        try {
+          const mailOptions = {
+            from: `Underwater Robotics <${process.env.SMTP_USER}>`,
+            to: email,
+            subject: "IMPORTANT: Abstract Submission Deadline Reminder",
+            html: htmlTemplate,
+          };
 
-    const emailPromises = emails.map(async (email) => {
-      const mailOptions = {
-        from: `Underwater Robotics <${process.env.SMTP_USER}>`,
-        to: email,
-        subject: "IMPORTANT: Abstract Submission Deadline Reminder",
-        html: htmlTemplate,
-      };
+          await transporter.sendMail(mailOptions);
+          return { email, status: "success" };
+        } catch (error) {
+          console.error(`Failed to send to ${email}:`, error);
+          return {
+            email,
+            status: "failed",
+            error: error.message,
+          };
+        }
+      })
+    );
 
-      try {
-        await transporter.sendMail(mailOptions);
-        return { email, status: "success" };
-      } catch (error) {
-        console.error(`Failed to send email to ${email}:`, error);
-        return { 
-          email, 
-          status: "failed", 
-          error: error.message 
-        };
-      }
-    });
-
-    const results = await Promise.all(emailPromises);
-
-    const successCount = results.filter(r => r.status === "success").length;
-    const failedCount = results.filter(r => r.status === "failed").length;
+    const successCount = results.filter((r) => r.status === "success").length;
+    const failedCount = results.filter((r) => r.status === "failed").length;
 
     return NextResponse.json({
       message: `Emails sent: ${successCount} successful, ${failedCount} failed`,
-      results
+      results,
     });
   } catch (error) {
     console.error("Email sending error:", error);
@@ -195,5 +203,13 @@ export async function POST(req) {
       { error: "Internal server error" },
       { status: 500 }
     );
+  } finally {
+    if (transporter) {
+      try {
+        await transporter.close();
+      } catch (error) {
+        console.error("Error closing transporter:", error);
+      }
+    }
   }
 }
