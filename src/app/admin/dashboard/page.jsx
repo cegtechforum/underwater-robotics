@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { signOut, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { LogOut, Loader2, BellRing, ArrowUp, RefreshCw } from "lucide-react";
+import { LogOut, Loader2, BellRing } from "lucide-react";
 import TeamCard from "./components/TeamCard";
 import TeamDetailsPage from "./components/TeamDetailsPage";
 import Footer from "@/components/Footer";
@@ -19,50 +19,12 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [signoutLoading, setSignoutLoading] = useState(false);
   const [sendingEmails, setSendingEmails] = useState(false);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const [skip, setSkip] = useState(0);
-  const [showScrollTop, setShowScrollTop] = useState(false);
-  const [retryCount, setRetryCount] = useState(0);
-  const [totalCount, setTotalCount] = useState(0);
-  
-  const loaderRef = useRef(null);
+
   const router = useRouter();
-
-  const fetchTeams = async (skipCount, isRetry = false) => {
-    try {
-      const response = await apiCall(`/get-all-teams?skip=${skipCount}`, null, "GET");
-
-      if (response.status === 200) {
-        if (skipCount === 0) {
-          setTeams(response.teams);
-        } else {
-          setTeams(prev => [...prev, ...response.teams]);
-        }
-        setHasMore(response.hasMore);
-        setSkip(skipCount + 50);
-        setTotalCount(response.totalCount);
-        setRetryCount(0);
-      } else {
-        throw new Error(response.message || "Failed to fetch teams");
-      }
-    } catch (error) {
-      console.error("An error occurred while fetching teams:", error);
-      if (!isRetry) {
-        toast.error("Failed to load teams. Retrying...");
-        if (retryCount < 3) {
-          setRetryCount(prev => prev + 1);
-          setTimeout(() => fetchTeams(skipCount, true), 2000);
-        } else {
-          toast.error("Failed to load teams after multiple attempts");
-        }
-      }
-      throw error;
-    }
-  };
 
   const fetchSessionAndTeamData = useCallback(async () => {
     setLoading(true);
+
     try {
       const sessionData = await getSession();
       setSession(sessionData);
@@ -72,7 +34,18 @@ const AdminDashboard = () => {
         return;
       }
 
-      await fetchTeams(0);
+      try {
+        const response = await apiCall("/get-all-teams", null, "GET");
+
+        if (response.status === 200) {
+          setTeams(response.teams);
+          // console.log("Teams after apiCall:", response.teams);
+        } else {
+          console.error("Error fetching teams:", response.message);
+        }
+      } catch (error) {
+        console.error("An error occurred while fetching teams:", error);
+      }
     } catch (error) {
       console.error("Error fetching session data:", error);
       router.push("/admin/login");
@@ -81,28 +54,28 @@ const AdminDashboard = () => {
     }
   }, [router]);
 
-  const loadMoreTeams = async () => {
-    if (loadingMore || !hasMore) return;
-    setLoadingMore(true);
-    try {
-      await fetchTeams(skip);
-    } finally {
-      setLoadingMore(false);
+  useEffect(() => {
+    fetchSessionAndTeamData();
+  }, [fetchSessionAndTeamData]);
+
+  useEffect(() => {
+    const checkSessionValidity = async () => {
+      const sessionData = await getSession();
+      if (!sessionData?.user?.email || sessionData.user.role !== "admin") {
+        router.push("/admin/login");
+      }
+    };
+
+    const intervalId = setInterval(checkSessionValidity, 2000);
+
+    return () => clearInterval(intervalId);
+  }, [router]);
+
+  useEffect(() => {
+    if (!loading && !session) {
+      router.push("/admin/login");
     }
-  };
-
-  const handleManualLoadMore = () => {
-    loadMoreTeams();
-  };
-
-  const handleScrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleRetry = () => {
-    setRetryCount(0);
-    fetchTeams(skip);
-  };
+  }, [session, loading, router]);
 
   const handleViewDetails = (team) => {
     setSelectedTeam(team);
@@ -115,29 +88,24 @@ const AdminDashboard = () => {
   };
 
   const handleStatusChange = (team, newStatus) => {
-    setTeams(prevTeams =>
-      prevTeams.map(t =>
-        t.teamName === team.teamName 
-          ? { ...t, submissionStatus: newStatus }
-          : t
-      )
+    const updatedTeams = teams.map((t) =>
+      t.teamName === team.teamName ? { ...t, submissionStatus: newStatus } : t
     );
+    setTeams(updatedTeams);
   };
 
   const handleDeleteTeam = (teamToDelete) => {
-    setTeams(prevTeams =>
-      prevTeams.filter(t => t.teamName !== teamToDelete.teamName)
+    const updatedTeams = teams.filter(
+      (t) => t.teamName !== teamToDelete.teamName
     );
+    setTeams(updatedTeams);
     handleBackToDashboard();
   };
 
   const handleSignOut = async () => {
     setSignoutLoading(true);
-    try {
-      await signOut({ callbackUrl: "/" });
-    } finally {
-      setSignoutLoading(false);
-    }
+    await signOut({ callbackUrl: "/" });
+    setSignoutLoading(false);
   };
 
   const handleSendReminders = async () => {
@@ -175,11 +143,15 @@ const AdminDashboard = () => {
 
           if (response.status === 200) {
             if (response.results) {
-              const successes = response.results.filter(r => r.status === "success");
-              const failures = response.results.filter(r => r.status === "failed");
+              const successes = response.results.filter(
+                (r) => r.status === "success"
+              );
+              const failures = response.results.filter(
+                (r) => r.status === "failed"
+              );
 
               totalSuccess += successes.length;
-              failedEmails.push(...failures.map(f => f.email));
+              failedEmails.push(...failures.map((f) => f.email));
             } else {
               totalSuccess += batches[i].length;
             }
@@ -216,48 +188,6 @@ const AdminDashboard = () => {
       setSendingEmails(false);
     }
   };
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 400);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    fetchSessionAndTeamData();
-  }, [fetchSessionAndTeamData]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      entries => {
-        if (entries[0].isIntersecting && hasMore && !loadingMore && currentView === "dashboard") {
-          loadMoreTeams();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [hasMore, loadingMore, currentView]);
-
-  useEffect(() => {
-    const checkSessionValidity = async () => {
-      const sessionData = await getSession();
-      if (!sessionData?.user?.email || sessionData.user.role !== "admin") {
-        router.push("/admin/login");
-      }
-    };
-
-    const intervalId = setInterval(checkSessionValidity, 2000);
-    return () => clearInterval(intervalId);
-  }, [router]);
 
   if (loading) {
     return (
@@ -310,50 +240,23 @@ const AdminDashboard = () => {
               </button>
             </div>
           </div>
-
-          {currentView === "dashboard" && (
-            <TeamStatistics teams={teams} totalCount={totalCount} />
-          )}
-
+          {/* Hide TeamStatistics if a team card is clicked */}
+          {currentView === "dashboard" && <TeamStatistics teams={teams} />}
           {currentView === "dashboard" && (
             <>
               {teams.length > 0 ? (
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {teams.map((team, index) => (
                     <TeamCard
-                      key={`${team.teamName}-${index}`}
+                      key={index}
                       team={team}
                       onViewDetails={handleViewDetails}
-                      className="animate-fadeIn"
                     />
                   ))}
                 </div>
               ) : (
                 <div className="text-center text-gray-600 font-medium">
                   No teams found
-                  <button
-                    onClick={handleRetry}
-                    className="ml-2 text-blue-500 hover:text-blue-600"
-                  >
-                    <RefreshCw className="h-4 w-4 inline" />
-                    Retry
-                  </button>
-                </div>
-              )}
-
-              {hasMore && (
-                <div className="flex flex-col items-center p-4 space-y-4">
-                  <div ref={loaderRef}></div>
-                  {loadingMore ? (
-                    <Loader2 className="animate-spin h-6 w-6 text-blue-500" />
-                  ) : (
-                    <button
-                      onClick={handleManualLoadMore}
-                      className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300"
-                    >
-                      Load More Teams
-                    </button>
-                  )}
                 </div>
               )}
             </>
@@ -366,16 +269,6 @@ const AdminDashboard = () => {
               onStatusChange={handleStatusChange}
               onDeleteTeam={handleDeleteTeam}
             />
-          )}
-
-          {showScrollTop && (
-            <button
-              onClick={handleScrollToTop}
-              className="fixed bottom-8 right-8 bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 transition-colors duration-300"
-              aria-label="Scroll to top"
-            >
-              <ArrowUp className="h-6 w-6" />
-            </button>
           )}
         </div>
       </div>
