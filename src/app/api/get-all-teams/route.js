@@ -4,7 +4,7 @@ export async function GET(req) {
   try {
     const url = new URL(req.url);
     const skip = parseInt(url.searchParams.get('skip') || '0');
-    const take = 30;
+    const take = 50;
 
     const totalCount = await prisma.Team.count();
 
