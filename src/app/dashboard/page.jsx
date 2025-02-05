@@ -253,7 +253,7 @@ const Dashboard = () => {
                   <div className="h-16 w-full bg-teal-50 flex items-center justify-center rounded-lg text-justify">
                     <p className="text-teal-600 font-semibold p-3">
                       Your Round 2 submission has been received. Thank you for
-                      participating! Results will be announced shortly.
+                      participating!
                     </p>
                   </div>
                 )}
