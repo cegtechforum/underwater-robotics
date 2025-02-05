@@ -151,6 +151,10 @@ export function TeamSignupForm() {
     router.push("/");
   };
 
+  const deadline = new Date("2025-02-05T23:59:00+05:30");
+  const now = new Date();
+  const isPastDeadline = now > deadline;
+
   const PasswordHintSection = () =>
     isPasswordFocused && (
       <div className="text-xs text-neutral-600 mt-2">
@@ -217,7 +221,7 @@ export function TeamSignupForm() {
                 Team Registration
               </h2>
               <p className="text-neutral-600 dark:text-neutral-400 text-base">
-              Join the Underwater Robotics Challenge
+                Join the Underwater Robotics Challenge
               </p>
             </div>
             <Button
@@ -548,12 +552,17 @@ export function TeamSignupForm() {
             <Button
               className={cn(
                 "bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-12 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]",
-                { "opacity-50 cursor-not-allowed": isSubmitting }
+                {
+                  "opacity-50 cursor-not-allowed ":
+                    isSubmitting || isPastDeadline,
+                }
               )}
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || isPastDeadline}
             >
-              {isSubmitting ? (
+              {isPastDeadline ? (
+                "Registrations Closed"
+              ) : isSubmitting ? (
                 <>
                   <Loader2 className="animate-spin h-5 w-5 mr-2 inline" />
                   Registering...
