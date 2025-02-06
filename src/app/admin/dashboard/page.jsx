@@ -5,9 +5,9 @@ import { signOut, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { LogOut, Loader2, BellRing } from "lucide-react";
 import TeamCard from "./components/TeamCard";
-import TeamDetailsPage from "./components/TeamDetailsPage";
+import TeamDetailsPage from "./components/Team";
 import Footer from "@/components/Footer";
-import TeamStatistics from "./components/TeamStatistics";
+import TeamStatistics from "./components/SubmittedDetails";
 import { toast, Toaster } from "react-hot-toast";
 import apiCall from "@/lib/apiCall";
 
@@ -35,11 +35,11 @@ const AdminDashboard = () => {
       }
 
       try {
-        const response = await apiCall("/get-submitted", null, "GET");
+        const response = await apiCall("/get-all-teams", null, "GET");
 
         if (response.status === 200) {
           setTeams(response.teams);
-          // console.log("Teams after apiCall:", response.teams);
+          console.log("Teams after apiCall:", response.teams);
         } else {
           console.error("Error fetching teams:", response.message);
         }

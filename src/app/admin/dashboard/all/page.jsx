@@ -7,7 +7,7 @@ import { LogOut, Loader2, BellRing } from "lucide-react";
 import TeamCard from "../components/TeamCard";
 import TeamDetailsPage from "../components/TeamDetailsPage";
 import Footer from "@/components/Footer";
-import TeamStatistics from "../components/SubmittedDetails";
+import TeamStatistics from "../components/TeamStatistics";
 import { toast, Toaster } from "react-hot-toast";
 import apiCall from "@/lib/apiCall";
 
@@ -35,11 +35,11 @@ const AdminDashboard = () => {
       }
 
       try {
-        const response = await apiCall("/get-all-teams", null, "GET");
+        const response = await apiCall("/get-submitted", null, "GET");
 
         if (response.status === 200) {
           setTeams(response.teams);
-        //   console.log("Teams after apiCall:", response.teams);
+          // console.log("Teams after apiCall:", response.teams);
         } else {
           console.error("Error fetching teams:", response.message);
         }

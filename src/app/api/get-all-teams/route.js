@@ -35,7 +35,11 @@ export async function GET() {
             mentorName: team.mentorName || null,
             mentorEmail: team.mentorEmail || null,
             mentorPhone: team.mentorPhone || null,
-            submission: team.submission || null,
+            submission: team.submission ? {
+                status: team.submission.status,
+                round1: team.submission.round1_pdf ? true : null,
+                round2: team.submission.round2_pdf ? true : null,
+            } : null,
         }));
 
         return new Response(
