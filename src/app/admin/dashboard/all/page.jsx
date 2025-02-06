@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { signOut, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { LogOut, Loader2, BellRing } from "lucide-react";
+import { LogOut, Loader2, ClipboardList } from "lucide-react";
 import TeamCard from "../components/TeamCard";
 import TeamDetailsPage from "../components/TeamDetailsPage";
 import Footer from "@/components/Footer";
@@ -136,7 +136,7 @@ const AdminDashboard = () => {
           }
 
           const response = await apiCall(
-            "/reminder-mail",
+            "/result-mail",
             { emails: batches[i] },
             "POST"
           );
@@ -214,8 +214,8 @@ const AdminDashboard = () => {
               >
                 {!sendingEmails ? (
                   <>
-                    <BellRing className="h-4 w-4" />
-                    <span className="hidden md:inline">Send Reminders</span>
+                    <ClipboardList className="h-4 w-4" />
+                    <span className="hidden md:inline">Announce Result</span>
                   </>
                 ) : (
                   <>
