@@ -11,8 +11,8 @@ const DayCountDown = () => {
     seconds: 0,
   });
 
-  const startDate = new Date("2025-01-11T20:00:00").getTime();
-  const endDate = new Date("2025-02-05T23:59:00").getTime();
+  const startDate = new Date("2025-02-06T00:00:00").getTime();
+  const endDate = new Date("2025-02-22T23:59:59").getTime();
   const totalDuration = endDate - startDate;
 
   useEffect(() => {
@@ -96,7 +96,7 @@ const DayCountDown = () => {
         </div>
 
         <div className="text-gray-200 text-xs flex items-center justify-center w-full">
-          <div className="font-medium">Counting down to the end of the Round 1</div>
+          <div className="font-medium">Counting down to the start of the Round 2</div>
           {/* <Link
             href="/signup"
             className="block ml-auto p-2 rounded-full text-white text-lg bg-black cursor-pointer font-bold border-2 border-gray-500 hover:rotate-45 hover:bg-orange-600 duration-300"
