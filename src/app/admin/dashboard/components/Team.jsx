@@ -154,37 +154,6 @@ const TeamDetailsPage = ({ team, onBack, onStatusChange, onDeleteTeam }) => {
     }
   };
 
-  //     if (pdfFile) {
-  //       try {
-  //         const pdfData =
-  //           pdfFile instanceof Uint8Array
-  //             ? pdfFile
-  //             : new Uint8Array(Object.values(pdfFile));
-  //         if (pdfData.length === 0) {
-  //           console.error("PDF data is empty");
-  //           return;
-  //         }
-  //         const blob = new Blob([pdfData], { type: "application/pdf" });
-  //         if (blob.size === 0) {
-  //           console.error("Blob creation failed or resulted in 0 bytes");
-  //           return;
-  //         }
-  //         const url = URL.createObjectURL(blob);
-  //         const link = document.createElement("a");
-  //         link.href = url;
-  //         link.download = `${roundLabel}_Document.pdf`;
-  //         document.body.appendChild(link);
-  //         link.click();
-  //         document.body.removeChild(link);
-  //         URL.revokeObjectURL(url);
-  //       } catch (error) {
-  //         console.error("Download error:", error);
-  //       }
-  //     } else {
-  //       console.error("No PDF file provided");
-  //     }
-  //   };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
