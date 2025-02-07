@@ -2,7 +2,7 @@ export const projectProposalResults = [
   { teamName: "ABYSSAL INSIGHT", college: "Sri Sairam Engineering College, Chennai" },
   { teamName: "AVATAAR", college: "Atlas SkillTech University, Mumbai, Maharashtra" },
   { teamName: "DECCA DIVERS", college: "Sri Sairam Engineering College, Chennai" },
-  { teamName: "DEEP TECH", college: "Saveetha Engineering College, Chennai" },
+  { teamName: "DEEPTECH", college: "Saveetha Engineering College, Chennai" },
   { teamName: "EAGLE PISTOL", college: "Sri Sairam Engineering College, Chennai" },
   { teamName: "GLITCH FIXERS", college: "Sri Sairam Engineering College, Chennai" },
   { teamName: "HYDROXPLORE", college: "Kalasalingam Academy of Research and Education, Virudhunagar" },
