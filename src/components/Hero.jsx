@@ -3,9 +3,12 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { getSession } from "next-auth/react";
 import Image from "next/image";
+import ResultsDialog from "./Dialog/Result";
+import { Ship } from "lucide-react";
 
 const Hero = () => {
   const [session, setSession] = useState(null);
+  const [isResultsOpen, setIsResultsOpen] = useState(false);
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -180,6 +183,33 @@ const Hero = () => {
         </div>
       </motion.a>
 
+      <motion.button
+        onClick={() => setIsResultsOpen(true)}
+        className="mt-4 font-orbitron flex justify-center gap-2 items-center mx-auto shadow-xl text-lg text-gray-50 
+  bg-gradient-to-r from-cyan-900 to-teal-900 backdrop-blur-md lg:font-semibold isolation-auto 
+  border-cyan-400 before:absolute before:w-full before:transition-all before:duration-700 
+  before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full 
+  before:bg-gradient-to-r before:from-cyan-400 before:to-teal-400 hover:text-black 
+  before:-z-10 before:aspect-square before:hover:scale-200 before:hover:duration-500 
+  relative z-10 px-6 py-2 overflow-hidden border-2 rounded-full group"
+        type="submit"
+      >
+        <motion.div
+          animate={{
+            y: [0, -4, 0],
+            rotate: [-2, 2, -2],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        >
+          <Ship className="w-5 h-5" />
+        </motion.div>
+        View Results
+      </motion.button>
+
       <div className="flex justify-center mt-7 mb-6">
         {!session || session.user.role !== "user" ? (
           <>
@@ -225,6 +255,7 @@ const Hero = () => {
           </>
         )}
       </div>
+      <ResultsDialog open={isResultsOpen} onOpenChange={setIsResultsOpen} />
     </div>
   );
 };
