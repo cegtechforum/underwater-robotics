@@ -13,7 +13,7 @@ export const projectProposalResults = [
   { teamName: "THE VISIONARIES", college: "Jerusalem College of Engineering, Pallikaranai, Chennai" },
   { teamName: "THINK TANK", college: "Jerusalem College of Engineering, Pallikaranai, Chennai" },
   { teamName: "VORTEX", college: "Coimbatore Institute of Technology, Coimbatore" },
-  { teamName: "XIREN", college: "Center for Intelligent Marine and Energy Systems, SRM Institute of Science and Technology, Kattankulathur, Chengalpattu" },
+  { teamName: "XIREN", college: "SRM Institute of Science and Technology, Kattankulathur, Chengalpattu" },
 ];
 
 export const softwareSimulationResults = [
