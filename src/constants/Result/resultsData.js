@@ -8,7 +8,7 @@ export const projectProposalResults = [
   { teamName: "HYDROXPLORE", college: "Kalasalingam Academy of Research and Education, Virudhunagar" },
   { teamName: "MTS AUV-ZHCET", college: "Zakir Hussain College of Engineering, Aligarh Muslim University, Aligarh" },
   { teamName: "SEADEEP", college: "Kalasalingam Academy of Research and Education, Virudhunagar" },
-  { teamName: "TEAM X", college: "Sri Krishna College of Engineering and Technology, Coimbatore" },
+  { teamName: "TEAMX", college: "Sri Krishna College of Engineering and Technology, Coimbatore" },
   { teamName: "TECH TITANS", college: "Sathyabama Institute of Science and Technology, Chennai" },
   { teamName: "THE VISIONARIES", college: "Jerusalem College of Engineering, Pallikaranai, Chennai" },
   { teamName: "THINK TANK", college: "Jerusalem College of Engineering, Pallikaranai, Chennai" },
