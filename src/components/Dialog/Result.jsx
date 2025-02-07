@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Trophy } from "lucide-react";
+import { ChevronDown, Trophy } from "lucide-react";
 import {
   projectProposalResults,
   softwareSimulationResults,
@@ -30,7 +30,9 @@ const ResultsDialog = ({ open, onOpenChange, trigger }) => {
         {title}
       </h2>
       <Table className="min-w-full">
-        <TableCaption className="text-blue-600 font-poppins">{title} - Results</TableCaption>
+        <TableCaption className="text-blue-600 font-poppins">
+          {title} - Results
+        </TableCaption>
         <TableHeader className="bg-violet-500/10">
           <TableRow>
             <TableHead className="text-blue-300 font-orbitron w-1/2 text-sm sm:text-base">
@@ -70,6 +72,12 @@ const ResultsDialog = ({ open, onOpenChange, trigger }) => {
             Round 1 Results
           </DialogTitle>
         </DialogHeader>
+        <div className="flex justify-center items-center text-blue-300 mt-2">
+          <span className="text-xs sm:text-sm bg-gradient-to-r from-blue-400 to-emerald-300 bg-clip-text text-transparent">
+            Scroll
+          </span>
+          <ChevronDown className="w-4 h-4 animate-bounce text-blue-300 ml-1 mt-1" />
+        </div>
 
         <ScrollArea className="h-[calc(100dvh-12rem)] sm:h-[calc(100dvh-9rem)] w-full px-3 sm:px-4">
           {renderTable("Project Proposal", projectProposalResults)}
