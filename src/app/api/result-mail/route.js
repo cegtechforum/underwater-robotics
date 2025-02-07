@@ -288,7 +288,7 @@ export async function POST(req) {
                 <p>Thank you for your dedication and active participation in Round 1 of the Underwater Robotics Competition. We appreciate the time, effort, and creativity you've invested in this competition.</p>
 
                 <div class="result-box">
-                    <h2 style="color: #034694; margin-top: 0;">Round 1 Results Announced</h2>
+                    <h2 style="color: #034694; margin-top: 0;">Round 1 Results Have Been Announced</h2>
                     <p>The results for Round 1 have been finalized and are now available for viewing. Each submission was carefully evaluated.</p>
                 </div>
 
