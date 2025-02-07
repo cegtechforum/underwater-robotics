@@ -32,7 +32,7 @@ export const hardwareDemoResults = [
   { teamName: "GOTEI 13", college: "Sri Sairam Engineering College, Chennai" },
   { teamName: "HYDROBOTS", college: "KMEA Engineering College, Ernakulam, Kerala" },
   { teamName: "HYDROGUARD", college: "Toc H Institute of Science and Technology, Ernakulam" },
-  { teamName: "INNOVATORS (SAHANA S)", college: "Sri Sairam Engineering College, Chennai" },
+  { teamName: "INNOVATORS", college: "Sri Sairam Engineering College, Chennai" },
   { teamName: "JAM ROBOTICS", college: "Sri Sairam Engineering College, Chennai" },
   { teamName: "TECHNOBOTS", college: "Sri Krishna College of Engineering and Technology, Coimbatore" },
   { teamName: "TIDAL TORCH", college: "Madras Institute of Technology, Anna University, Chennai" },
