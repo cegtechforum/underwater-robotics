@@ -285,7 +285,7 @@ export async function POST(req) {
             <div class="email-body">
                 <p class="greeting">Dear Team,</p>
 
-                <p>Thank you for your dedication and active participation in Round 1 of the Underwater Robotics Competition. We appreciate the time, effort, and creativity you've invested in this competition.</p>
+                <p>Thank you for your dedication and active participation in Round 1 of the Underwater Robotics Event. We appreciate the time, effort, and creativity you've invested in this event.</p>
 
                 <div class="result-box">
                     <h2 style="color: #034694; margin-top: 0;">Round 1 Results Have Been Announced</h2>
@@ -293,9 +293,9 @@ export async function POST(req) {
                 </div>
 
                 <div class="message-box">
-                    <p><strong>To All Participants:</strong> Your participation has contributed significantly to the success of this competition. The depth of technical knowledge and creativity displayed across all submissions reflects the bright future of underwater robotics. We sincerely appreciate your participation and the quality of your submissions.</p>
+                    <p><strong>To All Participants:</strong> Your participation has contributed significantly to the success of this event. The depth of technical knowledge and creativity displayed across all submissions reflects the bright future of underwater robotics. We sincerely appreciate your participation and the quality of your submissions.</p>
                     
-                    <p><strong>To Qualified Teams:</strong> We extend our sincere congratulations on your advancement to the next phase of the competition. Your submission demonstrated exceptional technical proficiency, innovative problem-solving approaches, and a clear understanding of underwater robotics principles. We anticipate your continued excellence as you progress to more advanced challenges.</p>
+                    <p><strong>To Qualified Teams:</strong> We extend our sincere congratulations on your advancement to the next phase of the event. Your submission demonstrated exceptional technical proficiency, innovative problem-solving approaches, and a clear understanding of underwater robotics principles. We anticipate your continued excellence as you progress to more advanced challenges.</p>
                     
                     <p><strong>To Teams Not Advancing:</strong> We strongly encourage you to maintain your innovative spirit and consider this experience as a stepping stone in your technical journey. Your dedication to underwater robotics is commendable, and we encourage you to continue pursuing your passion in this field. Your dedication to the field is valued, and we look forward to your participation in future technological endeavors.</p>
                 </div>
