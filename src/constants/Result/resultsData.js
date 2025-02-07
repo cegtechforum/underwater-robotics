@@ -20,7 +20,7 @@ export const softwareSimulationResults = [
   { teamName: "AQUAVISION 14.1", college: "Sri Sairam Engineering College, Chennai" },
   { teamName: "ARKHAOCEAIS", college: "College of Engineering, Guindy, Chennai" },
   { teamName: "BROTHERHOOD CYBER", college: "Sri Krishna College of Engineering and Technology, Coimbatore" },
-  { teamName: "CODE STORM", college: "Sri Krishna College of Engineering and Technology, Coimbatore" },
+  { teamName: "CODESTORM", college: "Sri Krishna College of Engineering and Technology, Coimbatore" },
   { teamName: "MATSYENDRA", college: "Atlas SkillTech University, Mumbai, Maharashtra" },
   { teamName: "SRMAUV", college: "SRM Institute of Science and Technology, Kattankulathur, Chengalpattu" },
   { teamName: "UNACCOUNTED", college: "Saveetha Engineering College, Chennai" },
