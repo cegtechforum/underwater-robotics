@@ -1,16 +1,13 @@
-//page to be run only in local
-//localhost:3000/admin/dashboard/all
-
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
 import { signOut, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { LogOut, Loader2, ClipboardList } from "lucide-react";
+import { LogOut, Loader2 } from "lucide-react";
 import TeamCard from "../components/TeamCard";
-import TeamDetailsPage from "../components/TeamDetailsPage";
+import TeamDetailsPage from "../components/Round2Submitted";
 import Footer from "@/components/Footer";
-import TeamStatistics from "../components/TeamStatistics";
+import TeamStatistics from "../components/SubmittedDetails";
 import { toast, Toaster } from "react-hot-toast";
 import apiCall from "@/lib/apiCall";
 
@@ -38,11 +35,11 @@ const AdminDashboard = () => {
       }
 
       try {
-        const response = await apiCall("/get-submitted", null, "GET");
+        const response = await apiCall("/get-round2", null, "GET");
 
         if (response.status === 200) {
           setTeams(response.teams);
-          // console.log("Teams after apiCall:", response.teams);
+        //   console.log("Teams after apiCall:", response.teams);
         } else {
           console.error("Error fetching teams:", response.message);
         }
@@ -139,7 +136,7 @@ const AdminDashboard = () => {
           }
 
           const response = await apiCall(
-            "/result-mail",
+            "/reminder-mail",
             { emails: batches[i] },
             "POST"
           );
@@ -210,15 +207,15 @@ const AdminDashboard = () => {
               Team Details
             </h1>
             <div className="flex items-center space-x-4">
-              <button
+              {/* <button
                 onClick={handleSendReminders}
                 className="bg-none border border-transparent text-blue-600 px-4 py-2 rounded-md hover:text-blue-700 hover:border-blue-700 transition-colors duration-300 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={sendingEmails}
               >
                 {!sendingEmails ? (
                   <>
-                    <ClipboardList className="h-4 w-4" />
-                    <span className="hidden md:inline">Announce Result</span>
+                    <BellRing className="h-4 w-4" />
+                    <span className="hidden md:inline">Send Reminders</span>
                   </>
                 ) : (
                   <>
@@ -226,7 +223,7 @@ const AdminDashboard = () => {
                     <span className="hidden md:inline">Sending...</span>
                   </>
                 )}
-              </button>
+              </button> */}
               <button
                 onClick={handleSignOut}
                 className="text-red-600 hover:text-red-800 transition-colors duration-300 flex items-center space-x-2"
