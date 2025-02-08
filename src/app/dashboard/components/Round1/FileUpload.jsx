@@ -26,7 +26,7 @@ export function FileUploadInput1({ email, disabled }) {
   useEffect(() => {
     const checkDeadline = () => {
       // const deadline = new Date("2025-02-06T00:00:00+05:30");
-      const deadline = new Date("2025-02-08T18:15:00+05:30");
+      const deadline = new Date("2025-02-08T18:40:00+05:30");
       const currentDate = new Date();
       setIsDeadlinePassed(currentDate >= deadline);
     };

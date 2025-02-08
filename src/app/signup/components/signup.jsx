@@ -152,7 +152,7 @@ export function TeamSignupForm() {
   };
 
   // const deadline = new Date("2025-02-05T23:59:00+05:30");
-  const deadline = new Date("2025-02-08T18:10:00+05:30");
+  const deadline = new Date("2025-02-08T18:30:00+05:30");
   const now = new Date();
   const isPastDeadline = now > deadline;
 
