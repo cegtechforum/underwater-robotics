@@ -7,7 +7,7 @@ import { LogOut, Loader2 } from "lucide-react";
 import TeamCard from "../components/TeamCard";
 import TeamDetailsPage from "../components/Round2Submitted";
 import Footer from "@/components/Footer";
-import TeamStatistics from "../components/SubmittedDetails";
+import TeamStatistics from "../components/TeamStatistics";
 import { toast, Toaster } from "react-hot-toast";
 import apiCall from "@/lib/apiCall";
 

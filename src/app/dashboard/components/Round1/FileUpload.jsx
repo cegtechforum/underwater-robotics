@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FileUpload } from "@/components/ui/file-upload";
 import {
   AlertDialog,
@@ -23,16 +23,26 @@ export function FileUploadInput1({ email, disabled }) {
   const [loading, setLoading] = useState(false);
   const [isDeadlinePassed, setIsDeadlinePassed] = useState(false);
 
+  useEffect(() => {
+    const checkDeadline = () => {
+      const deadline = new Date("2025-02-06T00:00:00+05:30");
+      const currentDate = new Date();
+      setIsDeadlinePassed(currentDate >= deadline);
+    };
+
+    checkDeadline();
+
+    const interval = setInterval(checkDeadline, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const handleFileUpload = (uploadedFiles) => {
     setFiles([uploadedFiles]);
   };
 
   const handleConfirmSubmit = async () => {
-    const deadline = new Date("2025-02-06T00:00:00+05:30");
-    const currentDate = new Date();
-
-    if (currentDate >= deadline) {
-      setIsDeadlinePassed(true);
+    if (isDeadlinePassed) {
       toast.error("Submission deadline has passed.");
       return;
     }
@@ -98,6 +108,8 @@ export function FileUploadInput1({ email, disabled }) {
     setShowDialog(false);
   };
 
+  const isButtonDisabled = isSubmitted || disabled || loading || isDeadlinePassed;
+
   return (
     <>
       <Toaster />
@@ -109,20 +121,22 @@ export function FileUploadInput1({ email, disabled }) {
         <div className="mt-4 flex justify-center">
           <Button
             onClick={handleOpenDialog}
-            disabled={isSubmitted || disabled || loading || isDeadlinePassed}
+            disabled={isButtonDisabled}
             className={`${
-              isDeadlinePassed || isSubmitted
-                ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+              isButtonDisabled
+                ? "bg-gray-400 hover:bg-gray-400 text-gray-700 cursor-not-allowed"
                 : "bg-black text-white hover:bg-black/80 transition duration-300"
             }`}
           >
             {loading ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin text-white" />
-                Submitting...
-              </>
+              <div className="flex items-center gap-2">
+                <Loader2 className="w-5 h-5 animate-spin" />
+                <span>Submitting...</span>
+              </div>
             ) : isSubmitted ? (
               "Submitted"
+            ) : isDeadlinePassed ? (
+              "Submission Closed"
             ) : (
               "Submit"
             )}
@@ -156,3 +170,5 @@ export function FileUploadInput1({ email, disabled }) {
     </>
   );
 }
+
+export default FileUploadInput1;
