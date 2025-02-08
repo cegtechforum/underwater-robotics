@@ -38,6 +38,7 @@ export const hardwareDemoResults = [
   { teamName: "TIDAL TORCH", college: "Madras Institute of Technology, Anna University, Chennai" },
   { teamName: "UVIRA", college: "KPR Institute of Engineering and Technology, Coimbatore" },
   { teamName: "VARUNAA", college: "Madras Institute of Technology, Anna University, Chennai" },
+  { teamName: "ARC", college: "KPR Institute of Engineering and Technology, Coimbatore" },
 ];
 
 export const waitlistedTeams = [
