@@ -77,13 +77,17 @@ export function FileUploadInput1({ email, disabled }) {
         });
 
         if (response.status === 200) {
-          toast.success("Your submission was successful. We will review it shortly!");
+          toast.success(
+            "Your submission was successful. We will review it shortly!"
+          );
           setIsSubmitted(true);
           setShowDialog(false);
         } else {
           const errorData = response;
           console.error("Error submitting file:", errorData);
-          toast.error(errorData.error || "Something went wrong. Please try again.");
+          toast.error(
+            errorData.error || "Something went wrong. Please try again."
+          );
         }
       } catch (error) {
         console.error("Error submitting file:", error);
@@ -108,15 +112,16 @@ export function FileUploadInput1({ email, disabled }) {
     setShowDialog(false);
   };
 
-  const isButtonDisabled = isSubmitted || disabled || loading || isDeadlinePassed;
+  const isButtonDisabled =
+    isSubmitted || disabled || loading || isDeadlinePassed;
 
   return (
     <>
       <Toaster />
       <div className="w-full max-w-4xl mx-auto min-h-96 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
-        <FileUpload 
-          onChange={handleFileUpload} 
-          disabled={isSubmitted || disabled || isDeadlinePassed} 
+        <FileUpload
+          onChange={handleFileUpload}
+          disabled={isSubmitted || disabled || isDeadlinePassed}
         />
         <div className="mt-4 flex justify-center">
           <Button
@@ -135,7 +140,7 @@ export function FileUploadInput1({ email, disabled }) {
               </div>
             ) : isSubmitted ? (
               "Submitted"
-            ) : isDeadlinePassed ? (
+            ) : !isSubmitted && isDeadlinePassed ? (
               "Submission Closed"
             ) : (
               "Submit"
@@ -143,25 +148,24 @@ export function FileUploadInput1({ email, disabled }) {
           </Button>
         </div>
 
-        {isDeadlinePassed && !isSubmitted && (
-          <div className="text-red-500 text-center mt-2">
-            Deadline has passed. Submissions are no longer allowed.
-          </div>
-        )}
-
         <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
               <AlertDialogDescription>
-                Once submitted, the document can&apos;t be altered. Are you sure you
-                want to submit?
+                Once submitted, the document can&apos;t be altered. Are you sure
+                you want to submit?
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel onClick={handleCancelDialog}>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleConfirmSubmit}>
-                Submit
+              <AlertDialogCancel onClick={handleCancelDialog}>
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleConfirmSubmit}
+                disabled={isSubmitted || isDeadlinePassed}
+              >
+                {isSubmitted ? "Submitted" : "Submit"}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
