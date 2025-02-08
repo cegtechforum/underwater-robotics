@@ -39,3 +39,8 @@ export const hardwareDemoResults = [
   { teamName: "UVIRA", college: "KPR Institute of Engineering and Technology, Coimbatore" },
   { teamName: "VARUNAA", college: "Madras Institute of Technology, Anna University, Chennai" },
 ];
+
+export const waitlistedTeams = [
+  { teamName: "HYDROMINDS", college: "College of Engineering, Guindy, Chennai" },
+  { teamName: "NETAI", college: "Sri Sairam Engineering College, Chennai" },
+];

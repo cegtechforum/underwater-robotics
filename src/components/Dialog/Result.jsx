@@ -21,12 +21,15 @@ import {
   projectProposalResults,
   softwareSimulationResults,
   hardwareDemoResults,
+  waitlistedTeams,
 } from "@/constants/Result/resultsData";
 
 const ResultsDialog = ({ open, onOpenChange, trigger }) => {
-  const renderTable = (title, results) => (
+  const renderTable = (title, results, highlightColor = "text-emerald-300") => (
     <div className="my-4 sm:my-6 bg-black/80 rounded-xl border-2 border-gray-700/80 px-4 sm:px-5 py-5 sm:py-6 w-full">
-      <h2 className="text-lg sm:text-xl font-orbitron text-emerald-300 mb-3 sm:mb-4">
+      <h2
+        className={`text-lg sm:text-xl font-orbitron ${highlightColor} mb-3 sm:mb-4`}
+      >
         {title}
       </h2>
       <Table className="min-w-full">
@@ -65,13 +68,14 @@ const ResultsDialog = ({ open, onOpenChange, trigger }) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="p-0 z-[10001] text-white/90 border-none w-[95vw] max-w-3xl sm:max-w-4xl lg:max-w-5xl bg-gradient-to-b from-violet-950/[0.2] via-violet-500/[0.1] via-60% border-l-2 border-violet-200/[0.1] backdrop-blur-md rounded-lg">
+      <DialogContent className="p-0 z-[10001] text-white/90 border-none w-[95vw] max-w-3xl sm:max-w-4xl lg:max-w-5xl bg-black rounded-lg">
         <DialogHeader className="px-4 sm:px-6 pt-5 sm:pt-6 pb-3 sm:pb-4 border-b border-violet-200/20">
           <DialogTitle className="text-lg sm:text-2xl font-orbitron tracking-wider text-emerald-200 flex items-center gap-2 sm:gap-3">
             <Trophy className="w-6 sm:w-8 h-6 sm:h-8 text-emerald-300" />
             Round 1 Results
           </DialogTitle>
         </DialogHeader>
+
         <div className="flex justify-center items-center text-blue-300 mt-2">
           <span className="text-xs sm:text-sm bg-gradient-to-r from-blue-400 to-emerald-300 bg-clip-text text-transparent">
             Scroll
@@ -83,6 +87,8 @@ const ResultsDialog = ({ open, onOpenChange, trigger }) => {
           {renderTable("Project Proposal", projectProposalResults)}
           {renderTable("Software Simulation", softwareSimulationResults)}
           {renderTable("Hardware Demo", hardwareDemoResults)}
+
+          {renderTable("Waitlisted Teams", waitlistedTeams, "text-yellow-400")}
         </ScrollArea>
       </DialogContent>
     </Dialog>
