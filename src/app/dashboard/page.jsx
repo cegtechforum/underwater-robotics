@@ -215,22 +215,21 @@ const Dashboard = () => {
                   {submissionStatus === "PENDING" && (
                     <div className="h-16 w-full bg-orange-50 flex items-center justify-center rounded-lg text-justify">
                       <p className="text-orange-600 font-semibold p-3">
-                        Your submission is under review.
+                      You have been waitlisted!
                       </p>
                     </div>
                   )}
                   {submissionStatus === "REJECTED" && (
                     <div className="h-16 w-full bg-red-50 flex items-center justify-center rounded-lg">
                       <p className="text-red-600 font-semibold p-3">
-                        Your submission has been rejected. Thank you for your
-                        participation.
+                      Your submission was not selected this time! Thank you for your participation.
                       </p>
                     </div>
                   )}
                   {submissionStatus === "APPROVED" && isRound1PDFUploaded && (
                     <div className="h-16 w-full bg-green-50 flex items-center justify-center rounded-lg">
                       <p className="text-green-600 font-semibold p-3">
-                        Your submission has been approved! You can now proceed
+                        Your submission has been selected! You can now proceed
                         to Round 2.
                       </p>
                     </div>
