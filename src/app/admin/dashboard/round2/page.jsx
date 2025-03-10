@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { signOut, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { LogOut, Loader2, Download } from "lucide-react"; // Import Download icon
+import { LogOut, Loader2, Download } from "lucide-react";
 import TeamCard from "../components/TeamCard";
 import TeamDetailsPage from "../components/Round2Submitted";
 import Footer from "@/components/Footer";
@@ -189,18 +189,17 @@ const AdminDashboard = () => {
     }
   };
 
-  // Function to trigger the JSON download
   const downloadTeamsAsJson = () => {
-    const jsonString = JSON.stringify(teams, null, 2); // Convert teams to JSON
-    const blob = new Blob([jsonString], { type: "application/json" }); // Create a Blob
-    const url = URL.createObjectURL(blob); // Create a URL for the Blob
-    const a = document.createElement("a"); // Create a temporary anchor element
+    const jsonString = JSON.stringify(teams, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
     a.href = url;
-    a.download = "teams.json"; // Set the filename
-    document.body.appendChild(a); // Append the anchor to the document
-    a.click(); // Trigger the download
-    document.body.removeChild(a); // Remove the anchor
-    URL.revokeObjectURL(url); // Revoke the URL
+    a.download = "teams.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   if (loading) {
