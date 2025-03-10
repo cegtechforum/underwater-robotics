@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { signOut, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { LogOut, Loader2 } from "lucide-react";
+import { LogOut, Loader2, Download } from "lucide-react"; // Import Download icon
 import TeamCard from "../components/TeamCard";
 import TeamDetailsPage from "../components/Round2Submitted";
 import Footer from "@/components/Footer";
@@ -39,7 +39,7 @@ const AdminDashboard = () => {
 
         if (response.status === 200) {
           setTeams(response.teams);
-        //   console.log("Teams after apiCall:", response.teams);
+          //   console.log("Teams after apiCall:", response.teams);
         } else {
           console.error("Error fetching teams:", response.message);
         }
@@ -189,6 +189,20 @@ const AdminDashboard = () => {
     }
   };
 
+  // Function to trigger the JSON download
+  const downloadTeamsAsJson = () => {
+    const jsonString = JSON.stringify(teams, null, 2); // Convert teams to JSON
+    const blob = new Blob([jsonString], { type: "application/json" }); // Create a Blob
+    const url = URL.createObjectURL(blob); // Create a URL for the Blob
+    const a = document.createElement("a"); // Create a temporary anchor element
+    a.href = url;
+    a.download = "teams.json"; // Set the filename
+    document.body.appendChild(a); // Append the anchor to the document
+    a.click(); // Trigger the download
+    document.body.removeChild(a); // Remove the anchor
+    URL.revokeObjectURL(url); // Revoke the URL
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -207,23 +221,13 @@ const AdminDashboard = () => {
               Team Details
             </h1>
             <div className="flex items-center space-x-4">
-              {/* <button
-                onClick={handleSendReminders}
-                className="bg-none border border-transparent text-blue-600 px-4 py-2 rounded-md hover:text-blue-700 hover:border-blue-700 transition-colors duration-300 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={sendingEmails}
+              <button
+                onClick={downloadTeamsAsJson}
+                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center space-x-2"
               >
-                {!sendingEmails ? (
-                  <>
-                    <BellRing className="h-4 w-4" />
-                    <span className="hidden md:inline">Send Reminders</span>
-                  </>
-                ) : (
-                  <>
-                    <Loader2 className="animate-spin h-4 w-4" />
-                    <span className="hidden md:inline">Sending...</span>
-                  </>
-                )}
-              </button> */}
+                <Download className="h-4 w-4" />
+                <span>Download JSON</span>
+              </button>
               <button
                 onClick={handleSignOut}
                 className="text-red-600 hover:text-red-800 transition-colors duration-300 flex items-center space-x-2"
