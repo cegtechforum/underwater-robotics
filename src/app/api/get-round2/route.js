@@ -6,7 +6,7 @@ export async function GET() {
             where: {
                 submission: {
                   status: {
-                    in: ["PENDING", "APPROVED"],
+                    in: ["PENDING", "APPROVED", "REJECTED"],
                   },
                 },
               },
